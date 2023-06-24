@@ -1,27 +1,15 @@
+use obs_db;
+
 CREATE TABLE obs_db.category(
-`idCategory` INT(10) NOT NULL AUTO_INCREMENT,
-  `categoryName` VARCHAR(255) NOT NULL, PRIMARY KEY(`idCategory`)
+  `idCategory` INT(10) NOT NULL AUTO_INCREMENT,
+  `categoryName` VARCHAR(255) NOT NULL,
+  image VARCHAR(255),
+  PRIMARY KEY(`idCategory`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
   COLLATE = `utf8mb4_general_ci`;
 
 INSERT INTO `category` (`idCategory`, `categoryName`) VALUES
 (1, 'mon chinh');
-
-CREATE TABLE obs_db.customer(
-  `idCustomer` INT(10) NOT NULL AUTO_INCREMENT,
-  `customerName` VARCHAR(111),
-  `phoneNumber` INT(11),
-  birthday DATE,
-  sex VARCHAR(3),
-  address VARCHAR(255),
-  email VARCHAR(255),
-  `isDelete` TINYINT(1) DEFAULT 0,
-  PRIMARY KEY(`idCustomer`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8`
-  COLLATE = `utf8_general_ci`;
-
-INSERT INTO `customer` (`idCustomer`, `customerName`, `phoneNumber`, `birthday`, `sex`, `address`, `email`, `isDelete`) VALUES
-(1, 'Nguyễn Bảnh', 987654321, '1987-03-20', 'Nữ', '234 An Dương Vương Quận 7', '24th@gmail.com', 0);
 
 CREATE TABLE obs_db.discount(
   `idDiscount` INT(10) NOT NULL AUTO_INCREMENT,
@@ -30,31 +18,37 @@ CREATE TABLE obs_db.discount(
   `description` VARCHAR(255),
   `value` INT(11) NOT NULL,
   `discountType` ENUM('fixed amount','percentage') NOT NULL,
-  `typeApply` ENUM('all','specific') NOT NULL,
   `startDate` DATE,
   `endDate` DATE,
   PRIMARY KEY(`idDiscount`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
   COLLATE = `utf8mb4_general_ci`;
 
-INSERT INTO `discount` (`idDiscount`, `code`, `discountName`, `description`, `value`, `discountType`, `typeApply`, `startDate`, `endDate`) VALUES
-(1, 'A1234', 'giam 10k', 'duoc giam 10k', 10000, 'fixed amount', 'all', '2023-07-20', '2023-07-25'),
-(2, 'S2345', 'giam 20k', 'duoc giam 20k', 20000, 'fixed amount', 'specific', '2023-07-21', '2023-07-23');
+INSERT INTO `discount` (`idDiscount`, `code`, `discountName`, `description`, `value`, `discountType`, `startDate`, `endDate`) VALUES
+(1, 'A1234', 'giam 10k', 'duoc giam 10k', 10000, 'fixed amount', '2023-07-20', '2023-07-25'),
+(2, 'S2345', 'giam 20k', 'duoc giam 20k', 20000, 'fixed amount', '2023-07-21', '2023-07-23');
 
 
 CREATE TABLE obs_db.ingredient(
   `idIngredient` INT(10) NOT NULL AUTO_INCREMENT,
-  `ingredientName` VARCHAR(255),
+  `ingredientName` VARCHAR(255) NOT NULL,
   `remainQuantity` DOUBLE(10,2) NOT NULL,
-  unit ENUM('KG','G') NOT NULL,
+  `ingredientType` ENUM("food", "drink") NOT NULL,
+  `importDate` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+  `expirationDate` TIMESTAMP NOT NULL
+    DEFAULT DATE_ADD(current_timestamp(), INTERVAL 2 DAY),
+  `priceOfOne` DOUBLE(10,2) NOT NULL,
+  unit ENUM('KG','CAN') NOT NULL,
+  `idReceipt` INT(10) NOT NULL,
   PRIMARY KEY(`idIngredient`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
   COLLATE = `utf8mb4_general_ci`;
 
-INSERT INTO `ingredient` (`idIngredient`, `ingredientName`, `remainQuantity`, `unit`) VALUES
-(1, 'thit ga', 5, 'KG'),
-(2, 'thit heo', 10, 'KG'),
-(3, 'rau', 6, 'KG');
+INSERT INTO `ingredient` (`idIngredient`, `ingredientName`, `remainQuantity`, `ingredientType`, `unit`, `priceOfOne`, `idReceipt`) VALUES
+(1, 'thit ga', 5, 'food', 'KG', 100000, 1),
+(2, 'thit heo', 10, 'food', 'KG', 50000, 1),
+(3, 'rau', 6, 'food', 'KG', 40000, 1),
+(4, 'coca', 600, 'drink', 'CAN', 10000, 1);
 
 
 CREATE TABLE obs_db.invoice(
@@ -109,8 +103,8 @@ CREATE TABLE obs_db.`order`(
   `orderType` ENUM('preOrder','order') NOT NULL,
   `status` ENUM('cart','providing','success') NOT NULL,
   `idTable` INT(10),
-  `idCustomer` INT(10),
   `idStaff` INT(10) NOT NULL,
+  `idCustomer` INT(10) NOT NULL,
   `createdAt` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
   note VARCHAR(100),
   PRIMARY KEY(`idOrder`)
@@ -118,8 +112,6 @@ CREATE TABLE obs_db.`order`(
   COLLATE = `utf8_general_ci`;
 
   CREATE INDEX `maBan` USING BTREE ON obs_db.`order`(`idTable`);
-  
-  CREATE INDEX khachhang_giohang USING BTREE ON obs_db.`order`(`idCustomer`);
   
 INSERT INTO `order` (`idOrder`, `guestNumber`, `deposit`, `orderType`, `status`, `idTable`, `idCustomer`, `idStaff`, `createdAt`, `note`) VALUES
 (1, 4, NULL, 'order', 'cart', 1, 1, 1, '2023-07-15 22:27:49', 'abc');
@@ -159,11 +151,12 @@ INSERT INTO `position` (`idPosition`, `positionName`, `basicSalary`) VALUES
 
 CREATE TABLE obs_db.product(
   `idProduct` INT(10) NOT NULL AUTO_INCREMENT,
-  `productName` VARCHAR(255),
+  `productName` VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) NOT NULL,
   image VARCHAR(255),
   `productType` ENUM('food','drink') NOT NULL,
   `isDirect` TINYINT(1) DEFAULT 1,
-  `isDelete` TINYINT(1) DEFAULT 0,
+  `isPublish` TINYINT(1) DEFAULT 0,
   `idCategory` INT(10) NOT NULL,
   PRIMARY KEY(`idProduct`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8`
@@ -171,21 +164,12 @@ CREATE TABLE obs_db.product(
 
   CREATE INDEX category_product USING BTREE ON obs_db.product(`idCategory`);
   
-INSERT INTO `product` (`idProduct`, `productName`, `image`, `productType`, `isDirect`, `isDelete`, `idCategory`) VALUES
-(1, 'ga heo mix rau xanh', '/media/imgs/gaHeoMixRauXanh', 'food', 1, 0, 1);
+INSERT INTO `product` (`idProduct`, `productName`, `slug`, `image`, `productType`, `isDirect`, `idCategory`) VALUES
+(1, 'ga heo mix rau xanh', 'ga-heo-mix-rau-xanh', '/media/imgs/gaHeoMixRauXanh', 'food', 1, 1);
 
-CREATE TABLE obs_db.productapplied(
-`idDiscount` INT(10) NOT NULL, `idProduct` INT(10) NOT NULL,
-  PRIMARY KEY(`idDiscount`, `idProduct`)
-) ENGINE = InnoDB DEFAULT CHARACTER SET = `utf8mb4`
-  COLLATE = `utf8mb4_general_ci`;
-
-  CREATE INDEX `sanpham_sanPhamApDung` USING BTREE ON obs_db.productapplied
-    (`idProduct`);
-  
 CREATE TABLE obs_db.productprice(
   `idProduct` INT(10) NOT NULL,
-  `productName` VARCHAR(255),
+  `productName` VARCHAR(255) NOT NULL,
   price DOUBLE(11,2) NOT NULL,
   cost DOUBLE(11,2) NOT NULL,
   PRIMARY KEY(`idProduct`)
@@ -197,7 +181,7 @@ INSERT INTO `productprice` (`idProduct`, `productName`, `price`, `cost`) VALUES
 
 CREATE TABLE obs_db.receipt(
   `idReceipt` INT(10) NOT NULL AUTO_INCREMENT,
-  `receiptType` ENUM('food','tools') NOT NULL,
+  `receiptType` ENUM('food', 'drink', 'tools') NOT NULL,
   total DOUBLE(11,2) NOT NULL,
   `idSupplier` INT(10) NOT NULL,
   `idStaff` INT(10) NOT NULL,
@@ -217,10 +201,10 @@ CREATE TABLE obs_db.receiptdetail(
   `idReceiptDetail` INT(10) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   quantity INT(11) NOT NULL,
-  price DOUBLE(10,2) NOT NULL,
-  unit ENUM('KG','G','UNIT') NOT NULL,
+  `quantityOfCrates` SMALLINT,
+  `priceOfOne` DOUBLE(10,2) NOT NULL,
+  unit ENUM('KG','UNIT','LITER','CRATES') NOT NULL,
   `idReceipt` INT(10) NOT NULL,
-  `idIngredient` INT(10),
   `idWareHouse` INT(10),
   PRIMARY KEY(`idReceiptDetail`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
@@ -229,27 +213,28 @@ CREATE TABLE obs_db.receiptdetail(
   CREATE INDEX `phieuNhap_chiTietPhieuNhap` USING BTREE ON obs_db.receiptdetail
     (`idReceipt`);
   
-INSERT INTO `receiptdetail` (`idReceiptDetail`, `name`, `quantity`, `price`, `unit`, `idReceipt`, `idIngredient`) VALUES
-(1, 'thit ga', 5, 100000.00, 'KG', 1, 1),
-(2, 'thit heo', 10, 50000.00, 'KG', 1, 2),
-(3, 'rau', 6, 40000.00, 'KG', 1, 3);
-INSERT INTO `receiptdetail` (`idReceiptDetail`, `name`, `quantity`, `price`, `unit`, `idReceipt`, `idWareHouse`) VALUES
-(4, 'dao', 6, 20000.00, 'UNIT', 2, 1);
+INSERT INTO `receiptdetail` (`idReceiptDetail`, `name`, `quantity`, `priceOfOne`, `unit`, `idReceipt`) VALUES
+(1, 'thit ga', 5, 100000.00, 'KG', 1),
+(2, 'thit heo', 10, 50000, 'KG', 1),
+(3, 'rau', 6, 40000, 'KG', 1);
+INSERT INTO `receiptdetail` (`idReceiptDetail`, `name`, `quantity`, `priceOfOne`, `unit`, `idReceipt`) VALUES
+(4, 'dao', 6, 20000.00, 'UNIT', 1);
 
 CREATE TABLE obs_db.recipe(
   `idProduct` INT(10) NOT NULL,
   `idIngredient` INT(10) NOT NULL,
   quantity DOUBLE(10,2) NOT NULL,
+  unit ENUM("KG", "CAN") NOT NULL,
   PRIMARY KEY(`idIngredient`, `idProduct`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = `utf8mb4`
   COLLATE = `utf8mb4_general_ci`;
 
   CREATE INDEX `sanpham_congThuc` USING BTREE ON obs_db.recipe(`idProduct`);
   
-INSERT INTO `recipe` (`idProduct`, `idIngredient`, `quantity`) VALUES
-(1, 1, 1.00),
-(1, 2, 2.50),
-(1, 3, 2.00);
+INSERT INTO `recipe` (`idProduct`, `idIngredient`, `quantity`, `unit`) VALUES
+(1, 1, 0.5, "KG"),
+(1, 2, 0.1, "KG"),
+(1, 3, 0.2, "KG");
 
 CREATE TABLE obs_db.staff(
   `idStaff` INT(10) NOT NULL AUTO_INCREMENT,
@@ -306,31 +291,33 @@ INSERT INTO `table` (`idTable`, `tableName`, `tableType`, `isUsing`, `isDelete`)
 
 CREATE TABLE obs_db.warehouse(
   `idWareHouse` INT(10) NOT NULL AUTO_INCREMENT,
-  `wareHouseName` VARCHAR(255),
+  `wareHouseName` VARCHAR(255) NOT NULL,
   `remainQuantity` INT(11) NOT NULL,
-  unit ENUM('UNIT') NOT NULL,
+  `priceOfOne` DOUBLE(10,2) NOT NULL,
+  unit ENUM('UNIT', "LITER") NOT NULL,
+  `idReceipt` INT(10) NOT NULL,
   PRIMARY KEY(`idWareHouse`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
   COLLATE = `utf8mb4_general_ci`;
 
-INSERT INTO `warehouse` (`idWareHouse`, `wareHouseName`, `remainQuantity`, `unit`) VALUES
-(1, 'dao', 6, 'UNIT');
+INSERT INTO `warehouse` (`idWareHouse`, `wareHouseName`, `remainQuantity`, `priceOfOne`, `unit`, `idReceipt`) VALUES
+(1, 'dao', 6, 20000, 'UNIT', 2);
 
 CREATE TABLE obs_db.`account`(
   `idAccount` INT(10) NOT NULL AUTO_INCREMENT,
   username VARCHAR(255) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255),
   `accessKey` VARCHAR(255),
   `refreshKey` VARCHAR(255),
+  `emailToken` VARCHAR(255),
+  `isVerifiedPhoneNumber` TINYINT(1) DEFAULT 0,
+  `isVerifiedEmail` TINYINT(1) DEFAULT 0,
   `isLocked` TINYINT(1) DEFAULT 0,
   PRIMARY KEY(`idAccount`)
 ) DEFAULT CHARACTER SET = `utf8` COLLATE = `utf8_general_ci`;
 
 INSERT INTO `account` (`idAccount`, `username`, `password`, `accessKey`, `refreshKey`, `isLocked`) VALUES
-(1, 'Minh Tan', '$2b$10$4TIquaPn6ztkZFlG8BdsSOiOiaa4r3pRqXZnglrya5rhRLcvQEZb.', '0ff61b8b1dfb19f5a6d1889f067dc11352d4635bdb7aaf06862f16eaddbf32655d4434a04de9f5a37f5e5e794f3ba3252ddbba155573d1f81d87815fdb1586db', 'b0f86fb8b6ab4e3a523dfa4e7d98bbced2bb4bdefc21e24835ac4311135d3029ab04c31376f4733fa1452773a7d3e8e6038d3a5ffb8506b6c3720a71ef4fa6d2', 0),
-(2, 'Minh Tan 1', '$2b$10$15f/JQvI11ziZJf43vGR9Oeb7pO9SkRh9DwPtzHHl7wgFN14qZ1zy', NULL, NULL, 0),
-(3, 'Minh Tan 2', '$2b$10$ejpHrtMdxuynv5bfH53js.m6I58l.lAw0X9koxa9B7FIq/rBczB.u', NULL, NULL, 0),
-(4, 'Minh Tan 3', '$2b$10$py2KiOh4IQwOQKxF/gElSOlkfN6VOu.HJhMGg.iakYag.jQTEp9H.', NULL, NULL, 0);
+(1, '0778070683', '$2b$10$./OmBoqKEMNHN6LFRgSk1uDkMGjJS/M3h6LFBokLfnEiRNYgreK4i', '0ff61b8b1dfb19f5a6d1889f067dc11352d4635bdb7aaf06862f16eaddbf32655d4434a04de9f5a37f5e5e794f3ba3252ddbba155573d1f81d87815fdb1586db', 'b0f86fb8b6ab4e3a523dfa4e7d98bbced2bb4bdefc21e24835ac4311135d3029ab04c31376f4733fa1452773a7d3e8e6038d3a5ffb8506b6c3720a71ef4fa6d2', 0);
 
 CREATE TABLE obs_db.permission(
 `idPermission` INT(10) NOT NULL AUTO_INCREMENT,
@@ -352,11 +339,7 @@ CREATE TABLE obs_db.account_permission(
 
 INSERT INTO `account_permission` (`idAP`, `idPermission`, `idAccount`) VALUES
 (1, 1, 1),
-(2, 2, 1),
-(3, 1, 2),
-(4, 2, 2),
-(5, 1, 3),
-(6, 2, 3);
+(2, 4, 1);
 
 CREATE TABLE obs_db.logger(
   `idLog` INT(10) NOT NULL,
@@ -365,6 +348,23 @@ CREATE TABLE obs_db.logger(
   `idAccount` INT(10) NOT NULL,
   PRIMARY KEY(`idLog`)
 ) DEFAULT CHARACTER SET = `utf8` COLLATE = `utf8_general_ci`;
+
+CREATE TABLE obs_db.customer(
+  `idCustomer` INT(10) NOT NULL AUTO_INCREMENT,
+  `customerName` VARCHAR(255) NOT NULL,
+  `phoneNumber` BIGINT(11) NOT NULL,
+  birthday DATE,
+  sex VARCHAR(3),
+  address VARCHAR(255),
+  email VARCHAR(255),
+  `isDelete` TINYINT(1) DEFAULT 0,
+  `idAccount` INT(10),
+  PRIMARY KEY(`idCustomer`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8`
+  COLLATE = `utf8_general_ci`;
+
+INSERT INTO `customer` (`idCustomer`, `customerName`, `phoneNumber`, `birthday`, `sex`, `address`, `email`, `isDelete`) VALUES
+(1, 'Nguyễn Bảnh', 987654321, '1987-03-20', 'Nữ', '234 An Dương Vương Quận 7', '24th@gmail.com', 0);
 
 ALTER TABLE obs_db.product
   ADD CONSTRAINT category_product
@@ -396,11 +396,6 @@ ALTER TABLE obs_db.invoice
     FOREIGN KEY (`idDiscount`) REFERENCES obs_db.discount (`idDiscount`)
       ON DELETE Restrict ON UPDATE Restrict;
 
-ALTER TABLE obs_db.productapplied
-  ADD CONSTRAINT `giamGia_sanPhamApDung`
-    FOREIGN KEY (`idDiscount`) REFERENCES obs_db.discount (`idDiscount`)
-      ON DELETE Restrict ON UPDATE Restrict;
-
 ALTER TABLE obs_db.`order`
   ADD CONSTRAINT giohang_ibfk_1
     FOREIGN KEY (`idTable`) REFERENCES obs_db.`table` (`idTable`) ON DELETE Cascade
@@ -410,11 +405,6 @@ ALTER TABLE obs_db.invoice
   ADD CONSTRAINT hoadonbanhang_ibfk_1
     FOREIGN KEY (`idStaff`) REFERENCES obs_db.staff (`idStaff`) ON DELETE Cascade
       ON UPDATE Cascade;
-
-ALTER TABLE obs_db.`order`
-  ADD CONSTRAINT khachhang_giohang
-    FOREIGN KEY (`idCustomer`) REFERENCES obs_db.customer (`idCustomer`)
-      ON DELETE Restrict ON UPDATE Restrict;
 
 ALTER TABLE obs_db.recipe
   ADD CONSTRAINT `nguyenLieu_congThuc`
@@ -451,11 +441,6 @@ ALTER TABLE obs_db.productprice
     FOREIGN KEY (`idProduct`) REFERENCES obs_db.product (`idProduct`)
       ON DELETE Restrict ON UPDATE Restrict;
 
-ALTER TABLE obs_db.productapplied
-  ADD CONSTRAINT `sanpham_sanPhamApDung`
-    FOREIGN KEY (`idProduct`) REFERENCES obs_db.product (`idProduct`)
-      ON DELETE Restrict ON UPDATE Restrict;
-
 ALTER TABLE obs_db.`order`
   ADD CONSTRAINT staff_order
     FOREIGN KEY (`idStaff`) REFERENCES obs_db.staff (`idStaff`);
@@ -481,9 +466,40 @@ ALTER TABLE obs_db.receipt
     FOREIGN KEY (`idStaff`) REFERENCES obs_db.staff (`idStaff`);
 
 ALTER TABLE obs_db.receiptdetail
-  ADD CONSTRAINT ingredient_receiptdetail
-    FOREIGN KEY (`idIngredient`) REFERENCES obs_db.ingredient (`idIngredient`);
-
-ALTER TABLE obs_db.receiptdetail
   ADD CONSTRAINT warehouse_receiptdetail
     FOREIGN KEY (`idWareHouse`) REFERENCES obs_db.warehouse (`idWareHouse`);
+
+ALTER TABLE obs_db.ingredient
+  ADD CONSTRAINT receipt_ingredient
+    FOREIGN KEY (`idReceipt`) REFERENCES obs_db.receipt (`idReceipt`);
+
+ALTER TABLE obs_db.warehouse
+  ADD CONSTRAINT receipt_warehouse
+    FOREIGN KEY (`idReceipt`) REFERENCES obs_db.receipt (`idReceipt`);
+
+ALTER TABLE obs_db.`order`
+  ADD CONSTRAINT customer_order
+    FOREIGN KEY (`idCustomer`) REFERENCES obs_db.customer (`idCustomer`);
+
+ALTER TABLE obs_db.customer
+  ADD CONSTRAINT account_customer
+    FOREIGN KEY (`idAccount`) REFERENCES obs_db.`account` (`idAccount`);
+
+Delimiter //
+CREATE TRIGGER trg_after_insert AFTER INSERT ON receiptdetail FOR EACH ROW
+BEGIN
+   SET @receiptType = (SELECT receiptType FROM receipt WHERE receipt.idReceipt = NEW.idReceipt);
+   IF "food" = @receiptType THEN
+      INSERT INTO ingredient (`ingredientName`, `remainQuantity`, `ingredientType`, `priceOfOne`, `unit`, `idReceipt`) VALUES (NEW.name, NEW.quantity, @receiptType, NEW.priceOfOne, NEW.unit, NEW.idReceipt);
+   ELSEIF "drink" = @receiptType THEN
+      SET @quantityCan = NEW.quantityOfCrates * NEW.quantity;
+      SET @priceOfOneCan = NEW.priceOfOne / NEW.quantityOfCrates;
+      INSERT INTO ingredient (`ingredientName`, `remainQuantity`, `ingredientType`, `priceOfOne`, `unit`, `idReceipt`) VALUES (NEW.name, @quantityCan, @receiptType, @priceOfOneCan, 'CAN', NEW.idReceipt);
+   ELSE
+      IF NEW.idWareHouse IS NULL THEN
+         INSERT INTO warehouse (`wareHouseName`, `remainQuantity`, `priceOfOne`, `unit`, `idReceipt`) VALUES (NEW.name, NEW.quantity, NEW.priceOfOne, NEW.unit, NEW.idReceipt);
+      ELSE 
+         UPDATE warehouse SET remainQuantity = remainQuantity + NEW.quantity WHERE warehouse.idWareHouse = NEW.idWareHouse;
+      END IF;
+   END IF;
+END;//

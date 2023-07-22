@@ -32,7 +32,7 @@ class NotFoundRequest extends ErrorResponse {
   }
 }
 
-module.exports = {
+export {
   ErrorResponse,
   ForbiddenRequest,
   ConflictRequest,

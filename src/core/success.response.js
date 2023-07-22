@@ -10,7 +10,10 @@ class SuccessResponse {
     }
   }
 
-  send({ res, header = {} }) {
+  send({ res, header = {}, cookies = {} }) {
+    Object.entries(cookies).forEach(([key, value]) => {
+      res.cookie(key, value)
+    })
     return res.status(this.statusCode).json(this.payload)
   }
 }

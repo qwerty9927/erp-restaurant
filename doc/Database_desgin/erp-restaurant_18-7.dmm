@@ -1,85 +1,5 @@
 {
 	"tables": {
-		"03e05c6d-303b-4a72-a46d-55f53e216e38": {
-			"collation": "utf8_general_ci",
-			"charset": "utf8",
-			"database": "obs_db",
-			"desc": "",
-			"embeddable": false,
-			"id": "03e05c6d-303b-4a72-a46d-55f53e216e38",
-			"initautoinc": 4,
-			"name": "area",
-			"relations": [
-				"570d481e-c0bb-4173-8ae4-3953dd72b707"
-			],
-			"rowformat": "Dynamic",
-			"tabletype": "InnoDB",
-			"cols": [
-				{
-					"after": "",
-					"autoinc": true,
-					"charset": null,
-					"collation": null,
-					"comment": "",
-					"datatype": "INT",
-					"defaultvalue": "",
-					"enum": "",
-					"id": "4a338db9-00df-4bb0-af59-fc224c93d4f2",
-					"list": false,
-					"name": "idArea",
-					"nn": true,
-					"param": "10",
-					"pk": true,
-					"unsigned": false,
-					"zerofill": false,
-					"estimatedSize": "",
-					"data": "",
-					"binary": false
-				},
-				{
-					"after": "",
-					"autoinc": false,
-					"charset": "",
-					"collation": "",
-					"comment": "",
-					"datatype": "VARCHAR",
-					"defaultvalue": "",
-					"enum": "",
-					"id": "2a54d0f5-d97e-401c-a9ca-6a3ea2ec90d5",
-					"list": false,
-					"name": "areaName",
-					"nn": false,
-					"param": "6",
-					"pk": false,
-					"unsigned": false,
-					"zerofill": false,
-					"estimatedSize": "",
-					"data": "",
-					"binary": false
-				}
-			],
-			"indexes": [],
-			"keys": [
-				{
-					"cols": [
-						{
-							"colid": "4a338db9-00df-4bb0-af59-fc224c93d4f2",
-							"id": "4bd2ce54-3400-482e-889f-4004c3bafe41"
-						}
-					],
-					"id": "ceb4e03f-4c94-4eb6-a46f-04388e85b3bb",
-					"isPk": true,
-					"name": "PRIMARY"
-				}
-			],
-			"lines": [],
-			"afterScript": "",
-			"generate": true,
-			"visible": true,
-			"generateCustomCode": true,
-			"estimatedSize": "",
-			"customCode": ""
-		},
 		"486b45ad-7793-4fa2-9f8a-9bcf324bb965": {
 			"collation": "utf8_general_ci",
 			"charset": "utf8",
@@ -87,7 +7,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "486b45ad-7793-4fa2-9f8a-9bcf324bb965",
-			"initautoinc": 2,
+			"initautoinc": "1",
 			"name": "customer",
 			"relations": [
 				"0889f67d-0e69-4b09-97a1-7d8f4a2f455f"
@@ -279,7 +199,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `customer` (`idCustomer`, `customerName`, `phoneNumber`, `birthday`, `sex`, `address`, `email`, `isDelete`) VALUES\n(1, 'Nguyễn Bảnh', 987654321, '1987-03-20', 'Nữ', '234 An Dương Vương Quận 7', '24th@gmail.com', 0);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -293,7 +213,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "28818bdb-8025-4c76-b13b-bf89b29a65ef",
-			"initautoinc": 2,
+			"initautoinc": "1",
 			"name": "invoice",
 			"relations": [
 				"b056c6b5-b2dc-4c5a-8c51-ab6cfa805326",
@@ -558,7 +478,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `invoice` (`idInvoice`, `amountDiscount`, `total`, `payment`, `idStaff`, `idOrder`, `idDiscount`, `createdAt`, `note`) VALUES\n(1, 9.99, 200000.00, 190000.00, 1, 1, 1, '2023-07-15 22:27:50', 'ghi chu abc');",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -572,7 +492,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "e366f02f-e2ef-4307-81b0-9c3d938b1e65",
-			"initautoinc": 2,
+			"initautoinc": "1",
 			"name": "invoicedetail",
 			"relations": [
 				"bcf4b59b-090e-454d-a891-aeb6d705be59",
@@ -775,7 +695,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `invoicedetail` (`idInvoiceDetail`, `productName`, `quantity`, `price`, `idProduct`, `idInvoice`) VALUES\n(1, 'ga heo mix rau xanh', 1, 200000.00, 1, 1);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -789,7 +709,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "27db5bfd-89f6-4571-983f-e2e63ab42871",
-			"initautoinc": 2,
+			"initautoinc": "1",
 			"name": "order",
 			"relations": [
 				"b056c6b5-b2dc-4c5a-8c51-ab6cfa805326",
@@ -1061,7 +981,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `order` (`idOrder`, `guestNumber`, `deposit`, `orderType`, `status`, `idTable`, `idCustomer`, `idStaff` `createdAt`, `note`) VALUES\n(1, 4, NULL, 'order', 'cart', 1, 1, 1, '2023-07-15 22:27:49', 'abc');",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -1075,8 +995,8 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "cadc80fa-656a-483a-8391-a7d6280f4dcf",
-			"initautoinc": 2,
-			"name": "orderdetail_1",
+			"initautoinc": "1",
+			"name": "orderdetail",
 			"relations": [
 				"5a8c65cf-f01b-49c3-8bf1-f09121c41f21",
 				"9cb8c483-01c5-4f74-bee4-66bffbccf145"
@@ -1295,7 +1215,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `orderdetail` (`idOrderDetail`, `quantity`, `status`, `idOrder`, `idProduct`, `callTime`, `note`) VALUES\n(1, 1, 'completed', 1, 1, '2023-07-15 22:27:50', 'ghi chu abc');",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -1309,7 +1229,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "cf3ba167-3558-43d3-be83-85eee3304820",
-			"initautoinc": 2,
+			"initautoinc": "1",
 			"name": "position",
 			"relations": [
 				"364f2659-89af-4a0f-b46a-b49f1a7a05ee"
@@ -1396,7 +1316,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `position` (`idPosition`, `positionName`, `basicSalary`) VALUES\n(1, 'nhan vie', 40000.00);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -1410,7 +1330,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "e00c976c-79cb-425f-a534-3a403856e312",
-			"initautoinc": 2,
+			"initautoinc": "1",
 			"name": "product",
 			"relations": [
 				"bcf4b59b-090e-454d-a891-aeb6d705be59",
@@ -1603,7 +1523,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `product` (`idProduct`, `productName`, `image`, `productType`, `isDirect`, `isDelete`, `idCategory`) VALUES\n(1, 'ga heo mix rau xanh', '/media/imgs/gaHeoMixRauXanh', 'food', 1, 0, 1);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -1617,12 +1537,13 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "efdd1892-43cd-4031-9546-6342cfe2ebc6",
-			"initautoinc": 2,
+			"initautoinc": "1",
 			"name": "staff",
 			"relations": [
 				"58ac2e22-f659-4710-b7e9-d5ef7fcd13c3",
 				"364f2659-89af-4a0f-b46a-b49f1a7a05ee",
-				"fe283ea9-0835-4937-843f-f820c01002cd"
+				"fe283ea9-0835-4937-843f-f820c01002cd",
+				"0d112bdd-8d91-4dfc-b308-854183d61898"
 			],
 			"rowformat": "Dynamic",
 			"tabletype": "InnoDB",
@@ -1829,7 +1750,7 @@
 					"id": "58a89e8d-7e8c-4c62-bb8f-d95b5dc6308e",
 					"list": false,
 					"name": "idPosition",
-					"nn": false,
+					"nn": true,
 					"param": "10",
 					"pk": false,
 					"unsigned": false,
@@ -1837,6 +1758,28 @@
 					"estimatedSize": "",
 					"data": "",
 					"binary": false
+				},
+				{
+					"id": "d6827b19-7ac8-4bb8-94b4-21d30fe2e190",
+					"name": "idAccount",
+					"datatype": "INT",
+					"param": "10",
+					"pk": false,
+					"nn": false,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": "",
+					"fk": true
 				},
 				{
 					"after": "",
@@ -1891,7 +1834,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `staff` (`idStaff`, `firstName`, `lastName`, `phoneNumber`, `birthday`, `sex`, `address`, `email`, `workingDate`, `idPosition`, `isDelete`) VALUES\n(1, 'Tô Huỳnh Thiện', 'Hiếu', 908888329, '2000-01-01', 'Nam', '23 An Dương Vương 2', 'no1@gmail.com', '2023-01-30', 1, 0);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -1905,7 +1848,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "aa252456-6d9c-4082-a101-b40c904dcf9e",
-			"initautoinc": 3,
+			"initautoinc": "1",
 			"name": "supplier",
 			"relations": [
 				"04e86fb0-835e-4d1c-99aa-70d578482d6d"
@@ -2076,7 +2019,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `supplier` (`idSupplier`, `supplierName`, `phoneNumber`, `address`, `email`, `supplyGoods`, `isDelete`) VALUES\n(1, 'Công ty ABC 1', 123456789, '234 Tôn Thất Tùng Phường 24 Quận 5', '123@gmailcom', 'Thuc pham', 0),\n(2, 'Công ty ABC 2', 123456789, '235 Tôn Thất Tùng Phường 24 Quận 5', '223@gmailcom', 'Dụng cụ', 0);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -2090,11 +2033,10 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "5eed5865-044f-4fe6-a042-2dc7884056ec",
-			"initautoinc": 4,
+			"initautoinc": "1",
 			"name": "table",
 			"relations": [
-				"f48dcc3a-d14f-4376-9ec0-3dddc0c55a3a",
-				"570d481e-c0bb-4173-8ae4-3953dd72b707"
+				"f48dcc3a-d14f-4376-9ec0-3dddc0c55a3a"
 			],
 			"rowformat": "Dynamic",
 			"tabletype": "InnoDB",
@@ -2142,6 +2084,27 @@
 					"binary": false
 				},
 				{
+					"id": "4aa89950-665f-45ea-88a6-5551cd9ee0c9",
+					"name": "tableType",
+					"datatype": "ENUM",
+					"param": "\"classic\", \"vip\"",
+					"pk": false,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
 					"after": "",
 					"autoinc": false,
 					"charset": null,
@@ -2182,47 +2145,9 @@
 					"estimatedSize": "",
 					"data": "",
 					"binary": false
-				},
-				{
-					"after": "",
-					"autoinc": false,
-					"charset": null,
-					"collation": null,
-					"comment": "",
-					"datatype": "INT",
-					"defaultvalue": "",
-					"enum": "",
-					"fk": true,
-					"id": "858280a1-537f-458c-9cc3-192837c8c5b8",
-					"list": false,
-					"name": "idArea",
-					"nn": true,
-					"param": "10",
-					"pk": false,
-					"unsigned": false,
-					"zerofill": false,
-					"estimatedSize": "",
-					"data": "",
-					"binary": false
 				}
 			],
-			"indexes": [
-				{
-					"cols": [
-						{
-							"colid": "858280a1-537f-458c-9cc3-192837c8c5b8",
-							"id": "49ae8746-178e-4bc7-b7de-11d4b494852d"
-						}
-					],
-					"fulltext": false,
-					"id": "5a1920ed-c91b-4867-8c3f-a0865d323a16",
-					"name": "ban_ibfk_1",
-					"unique": false,
-					"algorithm": "na",
-					"lockoption": "na",
-					"using": "BTREE"
-				}
-			],
+			"indexes": [],
 			"keys": [
 				{
 					"cols": [
@@ -2237,7 +2162,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `table` (`idTable`, `tableName`, `tableType`, `isUsing`, `isDelete`) VALUES\n(1, 'Ban 1', 'classic', 1, 0),\n(2, 'Ban 2', 'classic', 1, 0),\n(3, 'Ban 3', 'vip', 0, 1);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -2251,7 +2176,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "2d7b75d3-a2b1-4dd3-ba3d-2d403048ac5d",
-			"initautoinc": 2,
+			"initautoinc": "1",
 			"name": "category",
 			"relations": [
 				"3c894a6d-6784-49ab-bbf0-7e329aec808c"
@@ -2317,7 +2242,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `category` (`idCategory`, `categoryName`) VALUES\n(1, 'mon chinh');",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -2331,7 +2256,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "c4ce2430-89da-4664-9051-947c38953f3f",
-			"initautoinc": 3,
+			"initautoinc": "1",
 			"name": "discount",
 			"relations": [
 				"fb9e70c3-5aca-435a-92af-9b262c498b2e",
@@ -2545,7 +2470,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `discount` (`idDiscount`, `code`, `discountName`, `description`, `value`, `discountType`, `typeApply`, `startDate`, `endDate`) VALUES\n(1, 'A1234', 'giam 10k', 'duoc giam 10k', 10000, 'fixed amount', 'all', '2023-07-20', '2023-07-25'),\n(2, 'S2345', 'giam 20k', 'duoc giam 20k', 20000, 'fixed amount', 'specific', '2023-07-21', '2023-07-23');\n",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -2559,7 +2484,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "59ca7adc-da37-4abc-a51f-a8deea16e435",
-			"initautoinc": 4,
+			"initautoinc": "1",
 			"name": "ingredient",
 			"relations": [
 				"0011798d-b30d-452e-a876-1ead1ea45bb6",
@@ -2706,7 +2631,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `ingredient` (`idIngredient`, `ingredientName`, `remainQuantity`, `unit`, `idReceipt`) VALUES\n(1, 'thit ga', 5.00, 'KG', 1),\n(2, 'thit heo', 5.00, 'KG', 1),\n(3, 'rau', 2.00, 'KG', 1);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -2932,7 +2857,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `productprice` (`idProduct`, `productName`, `price`, `cost`) VALUES\n(1, 'ga heo mix rau xanh', 200000.00, 100000.00);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -2946,7 +2871,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "86046505-9977-456e-842c-c2e082f972b3",
-			"initautoinc": 3,
+			"initautoinc": "1",
 			"name": "receipt",
 			"relations": [
 				"0011798d-b30d-452e-a876-1ead1ea45bb6",
@@ -3116,7 +3041,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `receipt` (`idReceipt`, `receiptType`, `total`, `idSupplier`, `createdAt`, `note`) VALUES\n(1, 'food', 1240000.00, 1, '2023-07-15 22:27:49', 'ton tien qua'),\n(2, 'tools', 120000.00, 2, '2023-07-15 22:27:49', 'it ton tien');",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -3130,7 +3055,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "6edfb240-6fc7-48bc-87ca-e61dbaf9da86",
-			"initautoinc": 5,
+			"initautoinc": "1",
 			"name": "receiptdetail",
 			"relations": [
 				"50a1f6f1-410d-406f-8684-cd4bea8b77c4"
@@ -3297,7 +3222,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `receiptdetail` (`idReceiptDetail`, `name`, `quantity`, `price`, `unit`, `idReceipt`) VALUES\n(1, 'thit ga', 5, 100000.00, 'KG', 1),\n(2, 'thit heo', 10, 50000.00, 'KG', 1),\n(3, 'rau', 6, 40000.00, 'KG', 1),\n(4, 'dao', 6, 20000.00, 'UNIT', 2);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -3421,7 +3346,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `recipe` (`idProduct`, `idIngredient`, `quantity`) VALUES\n(1, 1, 1.00),\n(1, 2, 2.50),\n(1, 3, 2.00);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -3435,7 +3360,7 @@
 			"desc": "",
 			"embeddable": false,
 			"id": "d6d00f5f-56ca-4488-a8f0-d251dcbe3220",
-			"initautoinc": 2,
+			"initautoinc": "1",
 			"name": "warehouse",
 			"relations": [
 				"0756b65b-79e1-47cc-8590-ae5e1d5142aa"
@@ -3581,12 +3506,572 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "",
+			"afterScript": "INSERT INTO `warehouse` (`idWareHouse`, `wareHouseName`, `remainQuantity`, `unit`, `idReceipt`) VALUES\n(1, 'dao', 6, 'UNIT', 2);",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
 			"estimatedSize": "",
 			"customCode": ""
+		},
+		"5f1eef23-77c9-48c6-9247-67f359484cfe": {
+			"id": "5f1eef23-77c9-48c6-9247-67f359484cfe",
+			"visible": true,
+			"name": "account",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "e022e168-dea1-4586-a605-b0757fe29d21",
+					"name": "idAccount",
+					"datatype": "INT",
+					"param": "10",
+					"pk": true,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": true,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
+					"id": "26a33fc9-c6ee-4811-a3e5-a10e4169ccce",
+					"name": "username",
+					"datatype": "VARCHAR",
+					"param": "255",
+					"pk": false,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
+					"id": "3d833c3c-9da0-40dc-b33e-d03cd9eeddd9",
+					"name": "password",
+					"datatype": "VARCHAR",
+					"param": "255",
+					"pk": false,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
+					"id": "fa80d520-1942-47cf-8500-d913a0e4716c",
+					"name": "accessKey",
+					"datatype": "VARCHAR",
+					"param": "255",
+					"pk": false,
+					"nn": false,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
+					"id": "47b13300-b843-486e-bd2d-fd6b9ae2719b",
+					"name": "refreshKey",
+					"datatype": "VARCHAR",
+					"param": "255",
+					"pk": false,
+					"nn": false,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				}
+			],
+			"relations": [
+				"0d112bdd-8d91-4dfc-b308-854183d61898",
+				"ec13fdd9-604b-407d-a1c7-f8c096b74a06",
+				"b07a2404-a991-4f0a-ba61-d49a42bea37f",
+				"084e64d2-9831-48cf-bf2a-6f459feb5c71"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "4d6da485-7d94-4978-a531-576cb7dd63f8",
+					"name": "Primary key",
+					"isPk": true,
+					"cols": [
+						{
+							"id": "56bf0099-bbf7-4019-b40a-9b5fd44eb947",
+							"colid": "e022e168-dea1-4586-a605-b0757fe29d21"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"beforeScript": "",
+			"afterScript": "",
+			"tabletype": "",
+			"collation": "utf8_general_ci",
+			"charset": "utf8",
+			"rowformat": "na",
+			"database": "obs_db",
+			"initautoinc": false
+		},
+		"3188ab51-f193-4ffb-bd6a-5713d1935160": {
+			"id": "3188ab51-f193-4ffb-bd6a-5713d1935160",
+			"visible": true,
+			"name": "keyStore",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "6c2b7804-f0e0-4359-8c29-1d3399370a0c",
+					"name": "idKeyStore",
+					"datatype": "INT",
+					"param": "",
+					"pk": true,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": true,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
+					"id": "f0a41372-0bf7-4ff0-86e5-37a868f24592",
+					"name": "refreshToken",
+					"datatype": "VARCHAR",
+					"param": "255",
+					"pk": false,
+					"nn": false,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
+					"id": "7520073d-0de4-4e30-a7b6-207f8d1c5eb8",
+					"name": "idAccount",
+					"datatype": "INT",
+					"param": "10",
+					"pk": false,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": "",
+					"fk": true
+				}
+			],
+			"relations": [
+				"ec13fdd9-604b-407d-a1c7-f8c096b74a06"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "1d710a9e-ceec-4ca5-9ba7-3e9f38089eeb",
+					"name": "Primary key",
+					"isPk": true,
+					"cols": [
+						{
+							"id": "6d76c2b1-7efc-4aa6-a8cb-2ed7c646d8f1",
+							"colid": "6c2b7804-f0e0-4359-8c29-1d3399370a0c"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"beforeScript": "",
+			"afterScript": "",
+			"tabletype": "",
+			"collation": "utf8_general_ci",
+			"charset": "utf8",
+			"rowformat": "na",
+			"database": "obs_db",
+			"initautoinc": false
+		},
+		"34d4489d-c1f7-4a45-88b5-a602b1e74c0c": {
+			"id": "34d4489d-c1f7-4a45-88b5-a602b1e74c0c",
+			"visible": true,
+			"name": "permission",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "c8e96365-c2e2-49be-937c-c8ec121cc8bf",
+					"name": "idPermission",
+					"datatype": "INT",
+					"param": "10",
+					"pk": true,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": true,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
+					"id": "6af8434b-f07c-45ca-a0de-5f66a4380d1e",
+					"name": "permissionName",
+					"datatype": "VARCHAR",
+					"param": "255",
+					"pk": false,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				}
+			],
+			"relations": [
+				"8a9bf907-1511-4a84-a204-a7939618b70d"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "aca7fb35-10f6-4e37-8f02-555cc79e3221",
+					"name": "Primary key",
+					"isPk": true,
+					"cols": [
+						{
+							"id": "6108c9a0-8a91-45d6-85b6-ee4f1afb9564",
+							"colid": "c8e96365-c2e2-49be-937c-c8ec121cc8bf"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"beforeScript": "",
+			"afterScript": "insert into permission (permissionName) values ('kiem toan'), ('order'), ('manager');",
+			"tabletype": "",
+			"collation": "utf8_general_ci",
+			"charset": "utf8",
+			"rowformat": "na",
+			"database": "obs_db",
+			"initautoinc": false
+		},
+		"3d914a04-a30d-4ed8-a5c5-247bb7d0692a": {
+			"id": "3d914a04-a30d-4ed8-a5c5-247bb7d0692a",
+			"visible": true,
+			"name": "account_permission",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "5a4864b7-7732-4968-a74d-dc0206a742bb",
+					"name": "idAP",
+					"datatype": "INT",
+					"param": "",
+					"pk": true,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": true,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
+					"id": "2700f8ee-346a-4d90-9d57-3177e3bc1959",
+					"name": "idPermission",
+					"datatype": "INT",
+					"param": "10",
+					"pk": false,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": "",
+					"fk": true
+				},
+				{
+					"id": "974715a2-f445-4f2e-accc-3c37e502905c",
+					"name": "idAccount",
+					"datatype": "INT",
+					"param": "10",
+					"pk": false,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": "",
+					"fk": true
+				}
+			],
+			"relations": [
+				"8a9bf907-1511-4a84-a204-a7939618b70d",
+				"b07a2404-a991-4f0a-ba61-d49a42bea37f"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "020bae5f-51f2-4f92-ac5c-359abe849cd2",
+					"name": "Primary key",
+					"isPk": true,
+					"cols": [
+						{
+							"id": "0fc4be39-8564-4734-94b5-994bbc29aef7",
+							"colid": "5a4864b7-7732-4968-a74d-dc0206a742bb"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"beforeScript": "",
+			"afterScript": "",
+			"tabletype": "",
+			"collation": "utf8_general_ci",
+			"charset": "utf8",
+			"rowformat": "na",
+			"database": "obs_db",
+			"initautoinc": false
+		},
+		"3f4a13ce-41f3-4f4c-9905-3c7a3731e5f5": {
+			"id": "3f4a13ce-41f3-4f4c-9905-3c7a3731e5f5",
+			"visible": true,
+			"name": "logger",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "d466a867-7a41-4193-8c26-ed692c29372b",
+					"name": "idLog",
+					"datatype": "INT",
+					"param": "10",
+					"pk": true,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
+					"id": "9545671c-1839-4ed1-a021-9beb37f39b6a",
+					"name": "createdAt",
+					"datatype": "DATE",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "current_timestamp()",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
+					"id": "7dc84d11-4ea0-45f0-9ee4-7b156a3dcb6a",
+					"name": "action",
+					"datatype": "VARCHAR",
+					"param": "255",
+					"pk": false,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
+				},
+				{
+					"id": "30526342-0272-48fe-9059-b8e3b86a0d85",
+					"name": "idAccount",
+					"datatype": "INT",
+					"param": "10",
+					"pk": false,
+					"nn": true,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": "",
+					"fk": true
+				}
+			],
+			"relations": [
+				"084e64d2-9831-48cf-bf2a-6f459feb5c71"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "00894a3a-20c8-4806-b8e7-6112a739cd3f",
+					"name": "Primary key",
+					"isPk": true,
+					"cols": [
+						{
+							"id": "e8a57943-ce35-4dca-b58e-cd4adea7f745",
+							"colid": "d466a867-7a41-4193-8c26-ed692c29372b"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"beforeScript": "",
+			"afterScript": "",
+			"tabletype": "",
+			"collation": "utf8_general_ci",
+			"charset": "utf8",
+			"rowformat": "na",
+			"database": "obs_db",
+			"initautoinc": false
 		}
 	},
 	"relations": {
@@ -4094,34 +4579,6 @@
 			"generateCustomCode": true,
 			"customCode": ""
 		},
-		"570d481e-c0bb-4173-8ae4-3953dd72b707": {
-			"c_p": "one",
-			"c_cp": "",
-			"c_cch": "",
-			"c_ch": "many",
-			"c_mch": "true",
-			"c_mp": "true",
-			"desc": "",
-			"type": "identifying",
-			"child": "5eed5865-044f-4fe6-a042-2dc7884056ec",
-			"id": "570d481e-c0bb-4173-8ae4-3953dd72b707",
-			"name": "ban_ibfk_1",
-			"parent": "03e05c6d-303b-4a72-a46d-55f53e216e38",
-			"parent_key": "ceb4e03f-4c94-4eb6-a46f-04388e85b3bb",
-			"cols": [
-				{
-					"childcol": "858280a1-537f-458c-9cc3-192837c8c5b8",
-					"id": "506e700a-7425-4f8e-aeb8-31aaace7ef64",
-					"parentcol": "4a338db9-00df-4bb0-af59-fc224c93d4f2"
-				}
-			],
-			"ri_pd": "Cascade",
-			"ri_pu": "Cascade",
-			"visible": true,
-			"generate": true,
-			"generateCustomCode": true,
-			"customCode": ""
-		},
 		"0756b65b-79e1-47cc-8590-ae5e1d5142aa": {
 			"c_p": "one",
 			"c_cp": "",
@@ -4203,6 +4660,136 @@
 			"generate": true,
 			"generateCustomCode": true,
 			"customCode": ""
+		},
+		"0d112bdd-8d91-4dfc-b308-854183d61898": {
+			"id": "0d112bdd-8d91-4dfc-b308-854183d61898",
+			"visible": true,
+			"name": "account_staff",
+			"desc": "",
+			"type": "identifying",
+			"parent_key": "4d6da485-7d94-4978-a531-576cb7dd63f8",
+			"parent": "5f1eef23-77c9-48c6-9247-67f359484cfe",
+			"child": "efdd1892-43cd-4031-9546-6342cfe2ebc6",
+			"c_mp": "false",
+			"c_mch": "true",
+			"c_p": "one",
+			"c_ch": "one",
+			"c_cp": "",
+			"c_cch": "",
+			"cols": [
+				{
+					"id": "614fa686-4986-4297-9bce-dfefa5a5a171",
+					"parentcol": "e022e168-dea1-4586-a605-b0757fe29d21",
+					"childcol": "d6827b19-7ac8-4bb8-94b4-21d30fe2e190"
+				}
+			],
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": ""
+		},
+		"ec13fdd9-604b-407d-a1c7-f8c096b74a06": {
+			"id": "ec13fdd9-604b-407d-a1c7-f8c096b74a06",
+			"visible": true,
+			"name": "account_keyStore",
+			"desc": "",
+			"type": "identifying",
+			"parent_key": "4d6da485-7d94-4978-a531-576cb7dd63f8",
+			"parent": "5f1eef23-77c9-48c6-9247-67f359484cfe",
+			"child": "3188ab51-f193-4ffb-bd6a-5713d1935160",
+			"c_mp": "true",
+			"c_mch": "true",
+			"c_p": "one",
+			"c_ch": "many",
+			"c_cp": "",
+			"c_cch": "",
+			"cols": [
+				{
+					"id": "367303ff-78d5-4c1f-acc3-0b249de181e4",
+					"parentcol": "e022e168-dea1-4586-a605-b0757fe29d21",
+					"childcol": "7520073d-0de4-4e30-a7b6-207f8d1c5eb8"
+				}
+			],
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": ""
+		},
+		"8a9bf907-1511-4a84-a204-a7939618b70d": {
+			"id": "8a9bf907-1511-4a84-a204-a7939618b70d",
+			"visible": true,
+			"name": "permission_account_permission",
+			"desc": "",
+			"type": "identifying",
+			"parent_key": "aca7fb35-10f6-4e37-8f02-555cc79e3221",
+			"parent": "34d4489d-c1f7-4a45-88b5-a602b1e74c0c",
+			"child": "3d914a04-a30d-4ed8-a5c5-247bb7d0692a",
+			"c_mp": "true",
+			"c_mch": "true",
+			"c_p": "one",
+			"c_ch": "many",
+			"c_cp": "",
+			"c_cch": "",
+			"cols": [
+				{
+					"id": "e38de405-d1d2-4272-9695-b9831c8ef458",
+					"parentcol": "c8e96365-c2e2-49be-937c-c8ec121cc8bf",
+					"childcol": "2700f8ee-346a-4d90-9d57-3177e3bc1959"
+				}
+			],
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": ""
+		},
+		"b07a2404-a991-4f0a-ba61-d49a42bea37f": {
+			"id": "b07a2404-a991-4f0a-ba61-d49a42bea37f",
+			"visible": true,
+			"name": "account_account_permission",
+			"desc": "",
+			"type": "identifying",
+			"parent_key": "4d6da485-7d94-4978-a531-576cb7dd63f8",
+			"parent": "5f1eef23-77c9-48c6-9247-67f359484cfe",
+			"child": "3d914a04-a30d-4ed8-a5c5-247bb7d0692a",
+			"c_mp": "true",
+			"c_mch": "true",
+			"c_p": "one",
+			"c_ch": "many",
+			"c_cp": "",
+			"c_cch": "",
+			"cols": [
+				{
+					"id": "730428a0-9cfc-4e64-a07d-7e0902260e3a",
+					"parentcol": "e022e168-dea1-4586-a605-b0757fe29d21",
+					"childcol": "974715a2-f445-4f2e-accc-3c37e502905c"
+				}
+			],
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": ""
+		},
+		"084e64d2-9831-48cf-bf2a-6f459feb5c71": {
+			"id": "084e64d2-9831-48cf-bf2a-6f459feb5c71",
+			"visible": true,
+			"name": "account_logger",
+			"desc": "",
+			"type": "identifying",
+			"parent_key": "4d6da485-7d94-4978-a531-576cb7dd63f8",
+			"parent": "5f1eef23-77c9-48c6-9247-67f359484cfe",
+			"child": "3f4a13ce-41f3-4f4c-9905-3c7a3731e5f5",
+			"c_mp": "true",
+			"c_mch": "true",
+			"c_p": "one",
+			"c_ch": "many",
+			"c_cp": "",
+			"c_cch": "",
+			"cols": [
+				{
+					"id": "7c21cfd7-1e92-4316-bdb5-f332e22120b7",
+					"parentcol": "e022e168-dea1-4586-a605-b0757fe29d21",
+					"childcol": "30526342-0272-48fe-9059-b8e3b86a0d85"
+				}
+			],
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": ""
 		}
 	},
 	"notes": {},
@@ -4233,7 +4820,7 @@
 		},
 		"type": "MARIADB",
 		"version": 1,
-		"lastSaved": "Wed Jul 19 2023 10:23:57 GMT+0700 (Indochina Time)",
+		"lastSaved": "Thu Jul 20 2023 04:48:43 GMT+0700 (Indochina Time)",
 		"beforeScript": "",
 		"afterScript": "",
 		"sqlSettings": {
@@ -4263,21 +4850,9 @@
 			"lineColor": "transparent",
 			"description": "",
 			"diagramItems": {
-				"03e05c6d-303b-4a72-a46d-55f53e216e38": {
-					"x": 1663,
-					"y": 305,
-					"gHeight": 63,
-					"gWidth": 222,
-					"background": "#f44336",
-					"color": "#ffffff",
-					"referencedItemId": "03e05c6d-303b-4a72-a46d-55f53e216e38",
-					"resized": false,
-					"autoExpand": true,
-					"backgroundOpacity": "10"
-				},
 				"486b45ad-7793-4fa2-9f8a-9bcf324bb965": {
-					"x": 1368,
-					"y": 253,
+					"x": 1322,
+					"y": 280,
 					"gHeight": 171,
 					"gWidth": 263,
 					"background": "#03a9f4",
@@ -4288,8 +4863,8 @@
 					"backgroundOpacity": "10"
 				},
 				"28818bdb-8025-4c76-b13b-bf89b29a65ef": {
-					"x": 620,
-					"y": 583,
+					"x": 574,
+					"y": 610,
 					"gHeight": 189,
 					"gWidth": 260,
 					"background": "#673ab7",
@@ -4300,8 +4875,8 @@
 					"backgroundOpacity": "10"
 				},
 				"e366f02f-e2ef-4307-81b0-9c3d938b1e65": {
-					"x": 629,
-					"y": 837,
+					"x": 583,
+					"y": 864,
 					"gHeight": 135,
 					"gWidth": 254,
 					"background": "#673ab7",
@@ -4312,8 +4887,8 @@
 					"backgroundOpacity": "10"
 				},
 				"27db5bfd-89f6-4571-983f-e2e63ab42871": {
-					"x": 1095,
-					"y": 563,
+					"x": 1049,
+					"y": 590,
 					"gHeight": 207,
 					"gWidth": 217,
 					"background": "#f44336",
@@ -4324,8 +4899,8 @@
 					"backgroundOpacity": "10"
 				},
 				"cadc80fa-656a-483a-8391-a7d6280f4dcf": {
-					"x": 1624,
-					"y": 604,
+					"x": 1414,
+					"y": 634,
 					"gHeight": 153,
 					"gWidth": 214,
 					"background": "#f44336",
@@ -4336,8 +4911,8 @@
 					"backgroundOpacity": "10"
 				},
 				"cf3ba167-3558-43d3-be83-85eee3304820": {
-					"x": 741,
-					"y": 268,
+					"x": 713,
+					"y": 335,
 					"gHeight": 81,
 					"gWidth": 242,
 					"background": "#03a9f4",
@@ -4348,8 +4923,8 @@
 					"backgroundOpacity": "10"
 				},
 				"e00c976c-79cb-425f-a534-3a403856e312": {
-					"x": 971,
-					"y": 816,
+					"x": 925,
+					"y": 843,
 					"gHeight": 153,
 					"gWidth": 254,
 					"background": "#8bc34a",
@@ -4360,9 +4935,9 @@
 					"backgroundOpacity": "10"
 				},
 				"efdd1892-43cd-4031-9546-6342cfe2ebc6": {
-					"x": 1106,
-					"y": 243,
-					"gHeight": 225,
+					"x": 1035,
+					"y": 251,
+					"gHeight": 243,
 					"gWidth": 239,
 					"background": "#03a9f4",
 					"color": "#ffffff",
@@ -4384,8 +4959,8 @@
 					"backgroundOpacity": "10"
 				},
 				"5eed5865-044f-4fe6-a042-2dc7884056ec": {
-					"x": 1448,
-					"y": 466,
+					"x": 1402,
+					"y": 493,
 					"gHeight": 117,
 					"gWidth": 231,
 					"background": "#f44336",
@@ -4396,8 +4971,8 @@
 					"backgroundOpacity": "10"
 				},
 				"2d7b75d3-a2b1-4dd3-ba3d-2d403048ac5d": {
-					"x": 1443,
-					"y": 828,
+					"x": 1398,
+					"y": 841,
 					"gHeight": 63,
 					"gWidth": 258,
 					"background": "#8bc34a",
@@ -4408,8 +4983,8 @@
 					"backgroundOpacity": "10"
 				},
 				"c4ce2430-89da-4664-9051-947c38953f3f": {
-					"x": 435,
-					"y": 305,
+					"x": 374,
+					"y": 354,
 					"gHeight": 189,
 					"gWidth": 258,
 					"background": "#673ab7",
@@ -4432,8 +5007,8 @@
 					"backgroundOpacity": "10"
 				},
 				"6ec13224-f02d-4da9-a9f0-bc67a7d67b80": {
-					"x": 783,
-					"y": 399,
+					"x": 737,
+					"y": 426,
 					"gHeight": 63,
 					"gWidth": 198,
 					"background": "#673ab7",
@@ -4444,8 +5019,8 @@
 					"backgroundOpacity": "10"
 				},
 				"85797e1d-40a2-4aaa-ade9-8f6808c9d9aa": {
-					"x": 1454,
-					"y": 933,
+					"x": 1407,
+					"y": 936,
 					"gHeight": 99,
 					"gWidth": 254,
 					"background": "#8bc34a",
@@ -4468,8 +5043,8 @@
 					"backgroundOpacity": "10"
 				},
 				"6edfb240-6fc7-48bc-87ca-e61dbaf9da86": {
-					"x": 638,
-					"y": 1241,
+					"x": 454,
+					"y": 1206,
 					"gHeight": 135,
 					"gWidth": 222,
 					"background": "#8bc34a",
@@ -4492,13 +5067,73 @@
 					"backgroundOpacity": "10"
 				},
 				"d6d00f5f-56ca-4488-a8f0-d251dcbe3220": {
-					"x": 950,
-					"y": 1250,
+					"x": 775,
+					"y": 1212,
 					"gHeight": 117,
 					"gWidth": 273,
 					"background": "#8bc34a",
 					"color": "#ffffff",
 					"referencedItemId": "d6d00f5f-56ca-4488-a8f0-d251dcbe3220",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10"
+				},
+				"5f1eef23-77c9-48c6-9247-67f359484cfe": {
+					"referencedItemId": "5f1eef23-77c9-48c6-9247-67f359484cfe",
+					"x": 708,
+					"y": 146,
+					"gHeight": 117,
+					"gWidth": 237,
+					"color": "#ffffff",
+					"background": "#795548",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10"
+				},
+				"3188ab51-f193-4ffb-bd6a-5713d1935160": {
+					"referencedItemId": "3188ab51-f193-4ffb-bd6a-5713d1935160",
+					"x": 368,
+					"y": 166,
+					"gHeight": 81,
+					"gWidth": 251,
+					"color": "#ffffff",
+					"background": "#795548",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10"
+				},
+				"34d4489d-c1f7-4a45-88b5-a602b1e74c0c": {
+					"referencedItemId": "34d4489d-c1f7-4a45-88b5-a602b1e74c0c",
+					"x": 1370,
+					"y": 172,
+					"gHeight": 63,
+					"gWidth": 272,
+					"color": "#ffffff",
+					"background": "#795548",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10"
+				},
+				"3d914a04-a30d-4ed8-a5c5-247bb7d0692a": {
+					"referencedItemId": "3d914a04-a30d-4ed8-a5c5-247bb7d0692a",
+					"x": 1050,
+					"y": 162,
+					"gHeight": 81,
+					"gWidth": 211,
+					"color": "#ffffff",
+					"background": "#795548",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10"
+				},
+				"3f4a13ce-41f3-4f4c-9905-3c7a3731e5f5": {
+					"referencedItemId": "3f4a13ce-41f3-4f4c-9905-3c7a3731e5f5",
+					"x": 335,
+					"y": 609,
+					"gHeight": 99,
+					"gWidth": 210,
+					"color": "#ffffff",
+					"background": "#795548",
 					"resized": false,
 					"autoExpand": true,
 					"backgroundOpacity": "10"
@@ -4538,7 +5173,6 @@
 		}
 	},
 	"order": [
-		"03e05c6d-303b-4a72-a46d-55f53e216e38",
 		"2d7b75d3-a2b1-4dd3-ba3d-2d403048ac5d",
 		"486b45ad-7793-4fa2-9f8a-9bcf324bb965",
 		"c4ce2430-89da-4664-9051-947c38953f3f",
@@ -4558,7 +5192,11 @@
 		"aa252456-6d9c-4082-a101-b40c904dcf9e",
 		"5eed5865-044f-4fe6-a042-2dc7884056ec",
 		"d6d00f5f-56ca-4488-a8f0-d251dcbe3220",
-		"570d481e-c0bb-4173-8ae4-3953dd72b707",
+		"5f1eef23-77c9-48c6-9247-67f359484cfe",
+		"3188ab51-f193-4ffb-bd6a-5713d1935160",
+		"34d4489d-c1f7-4a45-88b5-a602b1e74c0c",
+		"3d914a04-a30d-4ed8-a5c5-247bb7d0692a",
+		"3f4a13ce-41f3-4f4c-9905-3c7a3731e5f5",
 		"3c894a6d-6784-49ab-bbf0-7e329aec808c",
 		"5a8c65cf-f01b-49c3-8bf1-f09121c41f21",
 		"bcf4b59b-090e-454d-a891-aeb6d705be59",
@@ -4579,7 +5217,12 @@
 		"ae75cc10-4355-41d4-bd3e-74d1aba3a7f4",
 		"6c01dbce-fc25-4f62-9e7d-2c41c8477290",
 		"4651daa5-d0dc-475b-b65c-c325879ba8cc",
-		"fe283ea9-0835-4937-843f-f820c01002cd"
+		"fe283ea9-0835-4937-843f-f820c01002cd",
+		"0d112bdd-8d91-4dfc-b308-854183d61898",
+		"ec13fdd9-604b-407d-a1c7-f8c096b74a06",
+		"8a9bf907-1511-4a84-a204-a7939618b70d",
+		"b07a2404-a991-4f0a-ba61-d49a42bea37f",
+		"084e64d2-9831-48cf-bf2a-6f459feb5c71"
 	],
 	"collapsedTreeItems": [],
 	"reverseStats": {}

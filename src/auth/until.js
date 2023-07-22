@@ -1,5 +1,6 @@
 import { randomBytes } from "crypto"
 import jwt from "jsonwebtoken"
+import { AuthFailureRequest } from "../core/error.response.js"
 
 const createKeyPair = () => {
   const accessKey = randomBytes(64).toString('hex')
@@ -19,7 +20,16 @@ const createTokenPair = ({ accessKey, refreshKey, payload }) => {
   }
 }
 
+const wrapperJwt= (token, key) => {
+  try {
+    return jwt.verify(token, key)
+  } catch(error) {
+    throw new AuthFailureRequest()
+  }
+}
+
 export {
   createKeyPair,
-  createTokenPair
+  createTokenPair,
+  wrapperJwt
 }

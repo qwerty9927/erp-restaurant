@@ -1,16 +1,16 @@
 import { hash, compare } from "bcrypt"
 import Connection from "../db/connect.js"
-import { ErrorResponse, NotFoundRequest } from "../core/error.response.js"
+import { AuthFailureRequest, ErrorResponse, NotFoundRequest } from "../core/error.response.js"
 import { accountString, apString } from "../constance/entityName.js"
-import { findUserByUsername, updateKeyPair } from "../repository/auth.repository.js"
+import { findAccountById, findAccountByUsername, updateById } from "../repository/auth.repository.js"
 import { createKeyPair, createTokenPair } from "../auth/until.js"
 
 class AuthService {
   async createAccount({ username, permissions }) {
     // Find user
-    const foundAccount = await findUserByUsername(username)
+    const foundAccount = await findAccountByUsername({ username })
     if (foundAccount) {
-      throw new NotFoundRequest("User is existed")
+      throw new NotFoundRequest("Account is existed")
     }
 
     // Handle password
@@ -23,7 +23,6 @@ class AuthService {
       password: passwordHash
     }
     const newAccount = await Connection.getInstance().getRepository(accountString).insert(accountInstance)
-    console.log("Account: ", newAccount)
     if (!newAccount) {
       throw new ErrorResponse("Create account faild")
     }
@@ -36,7 +35,6 @@ class AuthService {
       }
     })
     const newAps = await Connection.getInstance().getRepository(apString).insert(apInstances)
-    console.log("Account permission: ", newAps)
     if (!newAps) {
       throw new ErrorResponse("Apply permission failed")
     }
@@ -51,15 +49,15 @@ class AuthService {
 
   async login({ username, password }) {
     // Find account
-    const foundAccount = await findUserByUsername(username)
+    const foundAccount = await findAccountByUsername({ username })
     if (!foundAccount) {
-      throw new ErrorResponse("Account not exist")
+      throw new NotFoundRequest("Account not exist")
     }
 
     // Check password
     const isMatch = await compare(password, foundAccount.password)
     if (!isMatch) {
-      throw new ErrorResponse("Login failed")
+      throw new AuthFailureRequest("Login failed")
     }
 
     // Generate key pair
@@ -68,8 +66,8 @@ class AuthService {
     const { accessToken, refreshToken } = createTokenPair({ accessKey, refreshKey, payload })
 
     // Save key pair
-    const resultUpdateKeyPair = await updateKeyPair({accessKey, refreshKey, idAccount: foundAccount.idAccount})
-    if(!resultUpdateKeyPair){
+    const resultUpdateKeyPair = await updateById({ idAccount: foundAccount.idAccount, dataSet: { accessKey, refreshKey } })
+    if (!resultUpdateKeyPair) {
       throw new ErrorResponse("Update key failed")
     }
 
@@ -80,9 +78,33 @@ class AuthService {
   }
 
 
-  // async changePassword() {
+  async changePassword({ idAccount, oldPassword, newPassword }) {
+    const account = await findAccountById({ idAccount })
+    if (!account) {
+      throw new ErrorResponse("Account not exist")
+    }
 
-  // }
+    // Check password
+    const isMatch = await compare(oldPassword, account.password)
+    if (!isMatch) {
+      throw new AuthFailureRequest("Current password not correct")
+    }
+
+    // Update Account
+    const password = await hash(newPassword, 10)
+    const resultUpdateAccount = await updateById({ idAccount, dataSet: { password } })
+    if (!resultUpdateAccount) {
+      throw new ErrorResponse("Update account failed")
+    }
+  }
+
+  async logout(idAccount) {
+    const resultUpdateAccount = await updateById({ idAccount, dataSet: { accessKey: null, refreshKey: null } })
+    if (!resultUpdateAccount) {
+      throw new ErrorResponse()
+    }
+  }
+
 }
 
 export default new AuthService

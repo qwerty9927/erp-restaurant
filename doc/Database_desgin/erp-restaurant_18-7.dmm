@@ -169,7 +169,7 @@
 					"collation": null,
 					"comment": "",
 					"datatype": "TINYINT",
-					"defaultvalue": "",
+					"defaultvalue": "0",
 					"enum": "",
 					"id": "4fc5ca43-440d-4e88-a55c-81c74713285e",
 					"list": false,
@@ -981,7 +981,7 @@
 				}
 			],
 			"lines": [],
-			"afterScript": "INSERT INTO `order` (`idOrder`, `guestNumber`, `deposit`, `orderType`, `status`, `idTable`, `idCustomer`, `idStaff` `createdAt`, `note`) VALUES\n(1, 4, NULL, 'order', 'cart', 1, 1, 1, '2023-07-15 22:27:49', 'abc');",
+			"afterScript": "INSERT INTO `order` (`idOrder`, `guestNumber`, `deposit`, `orderType`, `status`, `idTable`, `idCustomer`, `idStaff`, `createdAt`, `note`) VALUES\n(1, 4, NULL, 'order', 'cart', 1, 1, 1, '2023-07-15 22:27:49', 'abc');",
 			"generate": true,
 			"visible": true,
 			"generateCustomCode": true,
@@ -1434,7 +1434,7 @@
 					"collation": null,
 					"comment": "",
 					"datatype": "TINYINT",
-					"defaultvalue": "",
+					"defaultvalue": "1",
 					"enum": "",
 					"id": "61b5c632-7abf-4c99-9b14-b6b19916df54",
 					"list": false,
@@ -1455,7 +1455,7 @@
 					"collation": null,
 					"comment": "",
 					"datatype": "TINYINT",
-					"defaultvalue": "",
+					"defaultvalue": "0",
 					"enum": "",
 					"id": "f943ba00-844c-4972-ac07-48eddcfc0786",
 					"list": false,
@@ -1788,7 +1788,7 @@
 					"collation": null,
 					"comment": "",
 					"datatype": "TINYINT",
-					"defaultvalue": "",
+					"defaultvalue": "0",
 					"enum": "",
 					"id": "2a884cf3-d718-456a-8894-49bd44346356",
 					"list": false,
@@ -1989,7 +1989,7 @@
 					"collation": null,
 					"comment": "",
 					"datatype": "TINYINT",
-					"defaultvalue": "",
+					"defaultvalue": "0",
 					"enum": "",
 					"id": "d664531b-08b2-4d91-b8aa-c612a47bf829",
 					"list": false,
@@ -2111,7 +2111,7 @@
 					"collation": null,
 					"comment": "",
 					"datatype": "TINYINT",
-					"defaultvalue": "",
+					"defaultvalue": "0",
 					"enum": "",
 					"id": "1824d39b-185d-4200-867a-03efc3b65f6b",
 					"list": false,
@@ -2132,7 +2132,7 @@
 					"collation": null,
 					"comment": "",
 					"datatype": "TINYINT",
-					"defaultvalue": "",
+					"defaultvalue": "0",
 					"enum": "",
 					"id": "fe5b2acc-a58a-4992-8a70-0f25b052eca9",
 					"list": false,
@@ -3624,11 +3624,31 @@
 					"unsigned": false,
 					"enum": "",
 					"estimatedSize": ""
+				},
+				{
+					"id": "25327755-17b1-4a80-a727-897a45bfd91e",
+					"name": "isLock",
+					"datatype": "TINYINT",
+					"param": "1",
+					"pk": false,
+					"nn": false,
+					"list": false,
+					"comment": "",
+					"defaultvalue": "0",
+					"data": "",
+					"after": "",
+					"autoinc": false,
+					"collation": null,
+					"charset": null,
+					"binary": false,
+					"zerofill": false,
+					"unsigned": false,
+					"enum": "",
+					"estimatedSize": ""
 				}
 			],
 			"relations": [
 				"0d112bdd-8d91-4dfc-b308-854183d61898",
-				"ec13fdd9-604b-407d-a1c7-f8c096b74a06",
 				"b07a2404-a991-4f0a-ba61-d49a42bea37f",
 				"084e64d2-9831-48cf-bf2a-6f459feb5c71"
 			],
@@ -3642,109 +3662,6 @@
 						{
 							"id": "56bf0099-bbf7-4019-b40a-9b5fd44eb947",
 							"colid": "e022e168-dea1-4586-a605-b0757fe29d21"
-						}
-					]
-				}
-			],
-			"indexes": [],
-			"embeddable": false,
-			"generate": true,
-			"generateCustomCode": true,
-			"customCode": "",
-			"beforeScript": "",
-			"afterScript": "",
-			"tabletype": "",
-			"collation": "utf8_general_ci",
-			"charset": "utf8",
-			"rowformat": "na",
-			"database": "obs_db",
-			"initautoinc": false
-		},
-		"3188ab51-f193-4ffb-bd6a-5713d1935160": {
-			"id": "3188ab51-f193-4ffb-bd6a-5713d1935160",
-			"visible": true,
-			"name": "keyStore",
-			"desc": "",
-			"estimatedSize": "",
-			"cols": [
-				{
-					"id": "6c2b7804-f0e0-4359-8c29-1d3399370a0c",
-					"name": "idKeyStore",
-					"datatype": "INT",
-					"param": "",
-					"pk": true,
-					"nn": true,
-					"list": false,
-					"comment": "",
-					"defaultvalue": "",
-					"data": "",
-					"after": "",
-					"autoinc": true,
-					"collation": null,
-					"charset": null,
-					"binary": false,
-					"zerofill": false,
-					"unsigned": false,
-					"enum": "",
-					"estimatedSize": ""
-				},
-				{
-					"id": "f0a41372-0bf7-4ff0-86e5-37a868f24592",
-					"name": "refreshToken",
-					"datatype": "VARCHAR",
-					"param": "255",
-					"pk": false,
-					"nn": false,
-					"list": false,
-					"comment": "",
-					"defaultvalue": "",
-					"data": "",
-					"after": "",
-					"autoinc": false,
-					"collation": null,
-					"charset": null,
-					"binary": false,
-					"zerofill": false,
-					"unsigned": false,
-					"enum": "",
-					"estimatedSize": ""
-				},
-				{
-					"id": "7520073d-0de4-4e30-a7b6-207f8d1c5eb8",
-					"name": "idAccount",
-					"datatype": "INT",
-					"param": "10",
-					"pk": false,
-					"nn": true,
-					"list": false,
-					"comment": "",
-					"defaultvalue": "",
-					"data": "",
-					"after": "",
-					"autoinc": false,
-					"collation": null,
-					"charset": null,
-					"binary": false,
-					"zerofill": false,
-					"unsigned": false,
-					"enum": "",
-					"estimatedSize": "",
-					"fk": true
-				}
-			],
-			"relations": [
-				"ec13fdd9-604b-407d-a1c7-f8c096b74a06"
-			],
-			"lines": [],
-			"keys": [
-				{
-					"id": "1d710a9e-ceec-4ca5-9ba7-3e9f38089eeb",
-					"name": "Primary key",
-					"isPk": true,
-					"cols": [
-						{
-							"id": "6d76c2b1-7efc-4aa6-a8cb-2ed7c646d8f1",
-							"colid": "6c2b7804-f0e0-4359-8c29-1d3399370a0c"
 						}
 					]
 				}
@@ -4687,32 +4604,6 @@
 			"generateCustomCode": true,
 			"customCode": ""
 		},
-		"ec13fdd9-604b-407d-a1c7-f8c096b74a06": {
-			"id": "ec13fdd9-604b-407d-a1c7-f8c096b74a06",
-			"visible": true,
-			"name": "account_keyStore",
-			"desc": "",
-			"type": "identifying",
-			"parent_key": "4d6da485-7d94-4978-a531-576cb7dd63f8",
-			"parent": "5f1eef23-77c9-48c6-9247-67f359484cfe",
-			"child": "3188ab51-f193-4ffb-bd6a-5713d1935160",
-			"c_mp": "true",
-			"c_mch": "true",
-			"c_p": "one",
-			"c_ch": "many",
-			"c_cp": "",
-			"c_cch": "",
-			"cols": [
-				{
-					"id": "367303ff-78d5-4c1f-acc3-0b249de181e4",
-					"parentcol": "e022e168-dea1-4586-a605-b0757fe29d21",
-					"childcol": "7520073d-0de4-4e30-a7b6-207f8d1c5eb8"
-				}
-			],
-			"generate": true,
-			"generateCustomCode": true,
-			"customCode": ""
-		},
 		"8a9bf907-1511-4a84-a204-a7939618b70d": {
 			"id": "8a9bf907-1511-4a84-a204-a7939618b70d",
 			"visible": true,
@@ -4820,7 +4711,7 @@
 		},
 		"type": "MARIADB",
 		"version": 1,
-		"lastSaved": "Thu Jul 20 2023 04:48:43 GMT+0700 (Indochina Time)",
+		"lastSaved": "Sat Jul 22 2023 13:43:53 GMT+0700 (Indochina Time)",
 		"beforeScript": "",
 		"afterScript": "",
 		"sqlSettings": {
@@ -5080,22 +4971,10 @@
 				},
 				"5f1eef23-77c9-48c6-9247-67f359484cfe": {
 					"referencedItemId": "5f1eef23-77c9-48c6-9247-67f359484cfe",
-					"x": 708,
-					"y": 146,
-					"gHeight": 117,
+					"x": 689,
+					"y": 157,
+					"gHeight": 135,
 					"gWidth": 237,
-					"color": "#ffffff",
-					"background": "#795548",
-					"resized": false,
-					"autoExpand": true,
-					"backgroundOpacity": "10"
-				},
-				"3188ab51-f193-4ffb-bd6a-5713d1935160": {
-					"referencedItemId": "3188ab51-f193-4ffb-bd6a-5713d1935160",
-					"x": 368,
-					"y": 166,
-					"gHeight": 81,
-					"gWidth": 251,
 					"color": "#ffffff",
 					"background": "#795548",
 					"resized": false,
@@ -5193,7 +5072,6 @@
 		"5eed5865-044f-4fe6-a042-2dc7884056ec",
 		"d6d00f5f-56ca-4488-a8f0-d251dcbe3220",
 		"5f1eef23-77c9-48c6-9247-67f359484cfe",
-		"3188ab51-f193-4ffb-bd6a-5713d1935160",
 		"34d4489d-c1f7-4a45-88b5-a602b1e74c0c",
 		"3d914a04-a30d-4ed8-a5c5-247bb7d0692a",
 		"3f4a13ce-41f3-4f4c-9905-3c7a3731e5f5",
@@ -5219,7 +5097,6 @@
 		"4651daa5-d0dc-475b-b65c-c325879ba8cc",
 		"fe283ea9-0835-4937-843f-f820c01002cd",
 		"0d112bdd-8d91-4dfc-b308-854183d61898",
-		"ec13fdd9-604b-407d-a1c7-f8c096b74a06",
 		"8a9bf907-1511-4a84-a204-a7939618b70d",
 		"b07a2404-a991-4f0a-ba61-d49a42bea37f",
 		"084e64d2-9831-48cf-bf2a-6f459feb5c71"

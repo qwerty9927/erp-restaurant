@@ -1,23 +1,22 @@
 import Connection from "../db/connect.js";
 import { accountString } from "../constance/entityName.js";
 
-const findUserByUsername = async (username) => await Connection.getInstance().getRepository(accountString).findOneBy({
-  username
+const findAccountByUsername = async ({ username, option = { isLocked: 0 } }) => await Connection.getInstance().getRepository(accountString).findOneBy({
+  username,
+  ...option
 })
 
-const findUserById = async (idAccount) => await Connection.getInstance().getRepository(accountString).findOneBy({
-  idAccount
+const findAccountById = async ({ idAccount, option = { isLocked: 0 } }) => await Connection.getInstance().getRepository(accountString).findOneBy({
+  idAccount,
+  ...option
 })
 
-const updateKeyPair = async ({accessKey, refreshKey, idAccount}) => await Connection.getInstance().getRepository(accountString).update({
+const updateById = async ({ idAccount, dataSet }) => await Connection.getInstance().getRepository(accountString).update({
   idAccount
-}, {
-  accessKey,
-  refreshKey
-})
+}, dataSet)
 
 export {
-  findUserByUsername,
-  findUserById,
-  updateKeyPair
+  findAccountByUsername,
+  findAccountById,
+  updateById
 }

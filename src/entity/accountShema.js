@@ -24,6 +24,9 @@ const accountSchema = new EntitySchema({
     refreshKey: {
       type: "varchar",
       length: 255
+    },
+    isLocked: {
+      type: "tinyint"
     }
   }, 
   relations: {

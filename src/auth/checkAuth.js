@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 import _ from "lodash"
-import { AuthFailureRequest, ForbiddenRequest } from "../core/error.response.js"
+import { ForbiddenRequest } from "../core/error.response.js"
 import { findAccountById, updateById } from "../repository/auth.repository.js"
 import { createTokenPair, createKeyPair, wrapperJwt } from "./until.js"
 
@@ -12,15 +12,15 @@ const checkAuth = async (req, res, next) => {
     }
 
     // Is exist user
-    const account = await findAccountById({ idAccount: clientId })
-    if (!account) {
+    const foundAccount = await findAccountById({ idAccount: clientId })
+    if (!foundAccount) {
       throw new ForbiddenRequest("User not found")
     }
 
     // verify token
     const { accessToken, refreshToken } = req.cookies
-    const resultToken = _.pick(wrapperJwt(refreshToken, account.refreshKey), ["idAccount", "username"])
-    jwt.verify(accessToken, account.accessKey, async (err, decoded) => {
+    const resultToken = _.pick(wrapperJwt(refreshToken, foundAccount.refreshKey), ["idAccount", "username"])
+    jwt.verify(accessToken, foundAccount.accessKey, async (err, decoded) => {
       if (err) {
         const { accessKey, refreshKey } = createKeyPair()
         const newTokens = createTokenPair({ accessKey, refreshKey, payload: resultToken })

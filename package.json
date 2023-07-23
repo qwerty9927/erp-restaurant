@@ -24,6 +24,7 @@
     "typeorm": "^0.3.17"
   },
   "devDependencies": {
+    "chalk": "^5.3.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1"
   }

@@ -1,6 +1,6 @@
 import { hash, compare } from "bcrypt"
 import Connection from "../db/connect.js"
-import { AuthFailureRequest, ErrorResponse, NotFoundRequest } from "../core/error.response.js"
+import { AuthFailureRequest, ConflictRequest, ErrorResponse, NotFoundRequest } from "../core/error.response.js"
 import { accountString, apString } from "../constance/entityName.js"
 import { findAccountById, findAccountByUsername, updateById } from "../repository/auth.repository.js"
 import { createKeyPair, createTokenPair } from "../auth/until.js"
@@ -8,36 +8,32 @@ import { createKeyPair, createTokenPair } from "../auth/until.js"
 class AuthService {
   async createAccount({ username, permissions }) {
     // Find user
-    const foundAccount = await findAccountByUsername({ username })
+    const foundAccount = await findAccountByUsername({ username, option: [{ isLocked: 0 }, { isLocked: 1 }] })
     if (foundAccount) {
-      throw new NotFoundRequest("Account is existed")
+      throw new ConflictRequest("Account is existed")
     }
 
     // Handle password
     const password = username
     const passwordHash = await hash(password, 10)
 
-    // Create account 
-    const accountInstance = {
-      username,
-      password: passwordHash
-    }
-    const newAccount = await Connection.getInstance().getRepository(accountString).insert(accountInstance)
-    if (!newAccount) {
-      throw new ErrorResponse("Create account faild")
-    }
-
-    // Create ap
-    const apInstances = permissions.map(permission => {
-      return {
-        idPermission: permission,
-        idAccount: newAccount.raw.insertId
+    await Connection.getInstance().transaction(async (transactionEntityManager) => {
+      // Create account 
+      const accountInstance = {
+        username,
+        password: passwordHash
       }
+      const newAccount = await transactionEntityManager.getRepository(accountString).insert(accountInstance)
+
+      // Create account permission
+      const apInstances = permissions.map(permission => {
+        return {
+          idPermission: permission,
+          idAccount: newAccount.raw.insertId
+        }
+      })
+      const newAps = await transactionEntityManager.getRepository(apString).insert(apInstances)
     })
-    const newAps = await Connection.getInstance().getRepository(apString).insert(apInstances)
-    if (!newAps) {
-      throw new ErrorResponse("Apply permission failed")
-    }
 
     return {
       accountInfo: {
@@ -67,16 +63,12 @@ class AuthService {
 
     // Save key pair
     const resultUpdateKeyPair = await updateById({ idAccount: foundAccount.idAccount, dataSet: { accessKey, refreshKey } })
-    if (!resultUpdateKeyPair) {
-      throw new ErrorResponse("Update key failed")
-    }
 
     return {
       accessToken,
       refreshToken
     }
   }
-
 
   async changePassword({ idAccount, oldPassword, newPassword }) {
     const account = await findAccountById({ idAccount })
@@ -93,18 +85,32 @@ class AuthService {
     // Update Account
     const password = await hash(newPassword, 10)
     const resultUpdateAccount = await updateById({ idAccount, dataSet: { password } })
-    if (!resultUpdateAccount) {
-      throw new ErrorResponse("Update account failed")
-    }
   }
 
   async logout(idAccount) {
+    // Clear key pair
     const resultUpdateAccount = await updateById({ idAccount, dataSet: { accessKey: null, refreshKey: null } })
-    if (!resultUpdateAccount) {
-      throw new ErrorResponse()
-    }
   }
 
+  async lockAccount(idAccount) {
+    const foundAccount = await findAccountById({ idAccount })
+    if (!foundAccount) {
+      throw new ErrorResponse("Account not exist")
+    }
+
+    // Change lock state
+    const resultUpdateLockState = await updateById({ idAccount, dataSet: { isLocked: 1 } })
+  }
+
+  async unLockAccount(idAccount) {
+    const foundAccount = await findAccountById({ idAccount, option: [{isLocked: 1}] })
+    if(!foundAccount) {
+      throw new ErrorResponse("Account not exist")
+    }
+
+    // Change lock state
+    const resultUpdateLockState = await updateById({idAccount, dataSet: {isLocked: 0}})
+  }
 }
 
 export default new AuthService

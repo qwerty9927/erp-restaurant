@@ -9,10 +9,14 @@ router.post("/login", AuthController.login)
 // Authorization
 router.use(checkAuth)
 
-router.post("/createAccount", AuthController.createAccount)
+router.put("/createAccount", AuthController.createAccount)
 
-router.post("/changePassword", AuthController.changePassword)
+router.patch("/changePassword", AuthController.changePassword)
 
 router.get("/logout", AuthController.logout)
+
+router.patch("/lockAccount", AuthController.lockAccount)
+
+router.patch("/unLockAccount", AuthController.unLockAccount)
 
 export default router

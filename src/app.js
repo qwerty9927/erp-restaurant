@@ -2,6 +2,7 @@ import Express from "express"
 import cors from "cors"
 import { config } from "dotenv"
 import morgan from "morgan"
+import chalk from "chalk"
 import cookieParser from "cookie-parser"
 import Connection from "./db/connect.js"
 import router from './routers/index.js'
@@ -34,17 +35,9 @@ app.use(cookieParser())
 // Database
 Connection.connect()
 
-
 // Router
 app.get('/', (req, res, next) => { res.send("Hello World") })
 app.use('/', router)
-// app.use("/sell", getDataMenu)
-// app.use("/product", Product)
-// app.use('/table/', getDataTable)
-// app.use('/table/:tableCode/detailcart', findInfoTableID)
-// app.use('/table/:tableCode/status', checkStatus)
-// app.use('/table/:tableCode/createcart', createCart)
-// app.use('/table/:cartId/addcart', addCartItem)
 
 // Handle Error
 app.use((req, res, next) => {
@@ -54,7 +47,6 @@ app.use((req, res, next) => {
 })
 
 app.use((error, req, res, next) => {
-  console.log(error)
   const statusCode = error.statusCode || 500
   const code = error.code || statusCode
   const message = error.message || "Internal Server Error"

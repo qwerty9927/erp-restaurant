@@ -3,6 +3,7 @@ import productRouter from './product/index.js'
 import authRouter from "./auth/index.js"
 import checkAuth from "../auth/checkAuth.js";
 import modelTest from "../tests/modelTest.js";
+import checkPermission from "../auth/checkPermission.js";
 
 const router = Router()
 
@@ -15,10 +16,14 @@ router.use("/v1/api/auth", authRouter)
 // Authorization
 router.use(checkAuth)
 
+// Permission
+router.use(checkPermission)
+
 // Product
 router.use("/v1/api/product", productRouter)
 
-// CheckAuth test
-router.get('/checkAuthTest', (req, res, next) => res.send("Test done"))
+// Test middleware
+router.get('/checkAuth', (req, res, next) => res.send("Test done"))
+router.get('/checkPermission', (req, res, next) => res.send("Test done"))
 
 export default router

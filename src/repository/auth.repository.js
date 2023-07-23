@@ -1,15 +1,17 @@
 import Connection from "../db/connect.js";
 import { accountString } from "../constance/entityName.js";
 
-const findAccountByUsername = async ({ username, option = { isLocked: 0 } }) => await Connection.getInstance().getRepository(accountString).findOneBy({
-  username,
-  ...option
-})
+const findAccountByUsername = async ({ username, option = [{ isLocked: 0 }] }) => await Connection.getInstance().getRepository(accountString).findOneBy(
+  option.map(item => {
+    return { username, ...item }
+  })
+)
 
-const findAccountById = async ({ idAccount, option = { isLocked: 0 } }) => await Connection.getInstance().getRepository(accountString).findOneBy({
-  idAccount,
-  ...option
-})
+const findAccountById = async ({ idAccount, option = [{ isLocked: 0 }] }) => await Connection.getInstance().getRepository(accountString).findOneBy(
+  option.map(item => {
+    return { idAccount, ...item }
+  })
+)
 
 const updateById = async ({ idAccount, dataSet }) => await Connection.getInstance().getRepository(accountString).update({
   idAccount

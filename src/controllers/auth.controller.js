@@ -1,4 +1,5 @@
 import { CreatedResponse, SuccessResponse } from "../core/success.response.js"
+import handleError from "../helpers/handleError.js"
 import AuthService from "../services/auth.service.js"
 
 
@@ -11,7 +12,7 @@ class AuthController {
         metadata: await AuthService.createAccount({ username, permissions })
       }).send({ res })
     } catch (error) {
-      next(error)
+      next(handleError(error))
     }
   }
 
@@ -27,7 +28,7 @@ class AuthController {
         metadata: { accessToken, refreshToken }
       }).send({ res, cookies })
     } catch (error) {
-      next(error)
+      next(handleError(error))
     }
   }
 
@@ -39,7 +40,7 @@ class AuthController {
         message: "Change password success"
       }).send({ res })
     } catch (error) {
-      next(error)
+      next(handleError(error))
     }
   }
 
@@ -54,7 +55,31 @@ class AuthController {
         message: "Logout success"
       }).send({ res, cookies })
     } catch (error) {
-      next(error)
+      next(handleError(error))
+    }
+  }
+
+  async lockAccount(req, res, next) {
+    try {
+      const { idAccount } = req.body
+      await AuthService.lockAccount(idAccount)
+      new SuccessResponse({
+        message: "Lock account success"
+      }).send({ res })
+    } catch (error) {
+      next(handleError(error))
+    }
+  }
+
+  async unLockAccount(req, res, next) {
+    try {
+      const { idAccount } = req.body
+      await AuthService.unLockAccount(idAccount)
+      new SuccessResponse({
+        message: "UnLock account success"
+      }).send({ res })
+    } catch (error) {
+      next(handleError(error))
     }
   }
 }

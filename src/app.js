@@ -2,10 +2,10 @@ import Express from "express"
 import cors from "cors"
 import { config } from "dotenv"
 import morgan from "morgan"
-import chalk from "chalk"
 import cookieParser from "cookie-parser"
 import Connection from "./db/connect.js"
 import router from './routers/index.js'
+import handleError from "./helpers/handleError.js"
 
 const app = Express()
 
@@ -47,6 +47,7 @@ app.use((req, res, next) => {
 })
 
 app.use((error, req, res, next) => {
+  error = handleError(error)
   const statusCode = error.statusCode || 500
   const code = error.code || statusCode
   const message = error.message || "Internal Server Error"

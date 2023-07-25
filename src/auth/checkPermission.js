@@ -11,7 +11,9 @@ const checkPermission = async (req, res, next) => {
       idAccount: req.idAccount
     }
   })
-  console.log(permissionOfAccount.account_permissionsRelation)
+  req.permissions = permissionOfAccount.account_permissionsRelation.map((permission) => {
+    return permission.idPermission
+  })
   next()
 }
 

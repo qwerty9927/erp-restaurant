@@ -12,7 +12,7 @@ class AuthController {
         metadata: await AuthService.createAccount({ username, permissions })
       }).send({ res })
     } catch (error) {
-      next(handleError(error))
+      next(error)
     }
   }
 
@@ -28,7 +28,7 @@ class AuthController {
         metadata: { accessToken, refreshToken }
       }).send({ res, cookies })
     } catch (error) {
-      next(handleError(error))
+      next(error)
     }
   }
 
@@ -40,7 +40,7 @@ class AuthController {
         message: "Change password success"
       }).send({ res })
     } catch (error) {
-      next(handleError(error))
+      next(error)
     }
   }
 
@@ -50,12 +50,14 @@ class AuthController {
         accessToken: null,
         refreshToken: null,
       }
+      console.log(cookies)
       await AuthService.logout(req.idAccount)
       new SuccessResponse({
         message: "Logout success"
       }).send({ res, cookies })
     } catch (error) {
-      next(handleError(error))
+      console.log(error)
+      next(error)
     }
   }
 
@@ -67,7 +69,7 @@ class AuthController {
         message: "Lock account success"
       }).send({ res })
     } catch (error) {
-      next(handleError(error))
+      next(error)
     }
   }
 
@@ -79,7 +81,7 @@ class AuthController {
         message: "UnLock account success"
       }).send({ res })
     } catch (error) {
-      next(handleError(error))
+      next(error)
     }
   }
 }

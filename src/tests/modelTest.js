@@ -1,5 +1,5 @@
 import Connection from "../db/connect.js"
-import { accountString, apString } from "../constance/entityName.js"
+import { accountString, apString, ingredientString, receiptString, receiptdetailString, supplierString, warehouseString } from "../constance/entityName.js"
 
 const modelTest = async (req, res, next) => {
   const key = parseInt(req.params.key)
@@ -19,6 +19,61 @@ const modelTest = async (req, res, next) => {
     // Relation
     case 3: {
       await testRelationAp_A()
+      break
+    }
+
+    // Supplier
+    case 4: {
+      await testSupplierEntity()
+      break
+    }
+
+    // Receipt
+    case 5: {
+      await testReceiptEntity()
+      break
+    }
+
+    // ReceiptDetail
+    case 6: {
+      await testReceiptDetailEntity()
+      break
+    
+    }
+
+    // WareHouse
+    case 7: {
+      await testWareHouseEntity()
+      break
+    }
+
+    // Ingredient
+    case 8: {
+      await testIngredientEntity()
+      break
+    }
+
+    // Receipt-receiptDetail
+    case 9: {
+      await testReceipt_RD()
+      break
+    }
+
+    // Receipt-warehouse
+    case 10: {
+      await testReceipt_WH()
+      break
+    }
+    
+    // Receipt-ingredient
+    case 11: {
+      await testReceipt_I()
+      break
+    }
+    
+    // Receipt-RD-WH-I
+    case 12: {
+      await testReceipt_RD_WH_I()
       break
     }
   }
@@ -74,6 +129,78 @@ const testRelationAp_A = async () => {
     })
   })
 
+  console.log(result)
+}
+
+const testSupplierEntity = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(supplierString).find()
+  console.log(result)
+}
+
+const testReceiptEntity = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(receiptString).find()
+  console.log(result)
+}
+
+const testReceiptDetailEntity = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(receiptdetailString).find()
+  console.log(result)
+}
+
+const testWareHouseEntity = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(warehouseString).find()
+  console.log(result)
+}
+
+const testIngredientEntity = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(ingredientString).find()
+  console.log(result)
+}
+
+const testReceipt_RD = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(receiptString).find({
+    relations: {
+      receiptDetailRelation: true
+    }
+  })
+  console.log(result)
+}
+
+const testReceipt_WH = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(receiptString).find({
+    relations: {
+      warehouseRelation: true
+    }
+  })
+  console.log(result)
+}
+
+const testReceipt_I = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(receiptString).find({
+    relations: {
+      ingredientRelation: true
+    }
+  })
+  console.log(result)
+}
+
+const testReceipt_RD_WH_I = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(receiptString).find({
+    relations: {
+      receiptDetailRelation: true,
+      warehouseRelation: true,
+      ingredientRelation: true
+    }
+  })
   console.log(result)
 }
 

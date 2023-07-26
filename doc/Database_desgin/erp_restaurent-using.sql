@@ -47,18 +47,15 @@ CREATE TABLE obs_db.ingredient(
   `ingredientName` VARCHAR(255),
   `remainQuantity` DOUBLE(10,2) NOT NULL,
   unit ENUM('KG','G') NOT NULL,
-  `idReceipt` INT(10) NOT NULL,
   PRIMARY KEY(`idIngredient`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
   COLLATE = `utf8mb4_general_ci`;
 
-  CREATE INDEX `phieuNhap_nguyenLieu` USING BTREE ON obs_db.ingredient
-    (`idReceipt`);
-  
-INSERT INTO `ingredient` (`idIngredient`, `ingredientName`, `remainQuantity`, `unit`, `idReceipt`) VALUES
-(1, 'thit ga', 5.00, 'KG', 1),
-(2, 'thit heo', 5.00, 'KG', 1),
-(3, 'rau', 2.00, 'KG', 1);
+INSERT INTO `ingredient` (`idIngredient`, `ingredientName`, `remainQuantity`, `unit`) VALUES
+(1, 'thit ga', 5, 'KG'),
+(2, 'thit heo', 10, 'KG'),
+(3, 'rau', 6, 'KG');
+
 
 CREATE TABLE obs_db.invoice(
   `idInvoice` INT(10) NOT NULL AUTO_INCREMENT,
@@ -124,7 +121,7 @@ CREATE TABLE obs_db.`order`(
   
   CREATE INDEX khachhang_giohang USING BTREE ON obs_db.`order`(`idCustomer`);
   
-INSERT INTO `order` (`idOrder`, `guestNumber`, `deposit`, `orderType`, `status`, `idTable`, `idCustomer`, `idStaff` `createdAt`, `note`) VALUES
+INSERT INTO `order` (`idOrder`, `guestNumber`, `deposit`, `orderType`, `status`, `idTable`, `idCustomer`, `idStaff`, `createdAt`, `note`) VALUES
 (1, 4, NULL, 'order', 'cart', 1, 1, 1, '2023-07-15 22:27:49', 'abc');
 
 CREATE TABLE obs_db.orderdetail(
@@ -201,8 +198,9 @@ INSERT INTO `productprice` (`idProduct`, `productName`, `price`, `cost`) VALUES
 CREATE TABLE obs_db.receipt(
   `idReceipt` INT(10) NOT NULL AUTO_INCREMENT,
   `receiptType` ENUM('food','tools') NOT NULL,
-  total DOUBLE(11,2),
+  total DOUBLE(11,2) NOT NULL,
   `idSupplier` INT(10) NOT NULL,
+  `idStaff` INT(10) NOT NULL,
   `createdAt` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
   note VARCHAR(255),
   PRIMARY KEY(`idReceipt`)
@@ -211,9 +209,9 @@ CREATE TABLE obs_db.receipt(
 
   CREATE INDEX `nhacungcap_phieuNhap` USING BTREE ON obs_db.receipt(`idSupplier`);
   
-INSERT INTO `receipt` (`idReceipt`, `receiptType`, `total`, `idSupplier`, `createdAt`, `note`) VALUES
-(1, 'food', 1240000.00, 1, '2023-07-15 22:27:49', 'ton tien qua'),
-(2, 'tools', 120000.00, 2, '2023-07-15 22:27:49', 'it ton tien');
+INSERT INTO `receipt` (`idReceipt`, `receiptType`, `total`, `idSupplier`, `idStaff`, `createdAt`, `note`) VALUES
+(1, 'food', 1240000.00, 1, 1, '2023-07-15 22:27:49', 'ton tien qua'),
+(2, 'tools', 120000.00, 2, 1, '2023-07-15 22:27:49', 'it ton tien');
 
 CREATE TABLE obs_db.receiptdetail(
   `idReceiptDetail` INT(10) NOT NULL AUTO_INCREMENT,
@@ -222,6 +220,8 @@ CREATE TABLE obs_db.receiptdetail(
   price DOUBLE(10,2) NOT NULL,
   unit ENUM('KG','G','UNIT') NOT NULL,
   `idReceipt` INT(10) NOT NULL,
+  `idIngredient` INT(10),
+  `idWareHouse` INT(10),
   PRIMARY KEY(`idReceiptDetail`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
   COLLATE = `utf8mb4_general_ci`;
@@ -229,11 +229,12 @@ CREATE TABLE obs_db.receiptdetail(
   CREATE INDEX `phieuNhap_chiTietPhieuNhap` USING BTREE ON obs_db.receiptdetail
     (`idReceipt`);
   
-INSERT INTO `receiptdetail` (`idReceiptDetail`, `name`, `quantity`, `price`, `unit`, `idReceipt`) VALUES
-(1, 'thit ga', 5, 100000.00, 'KG', 1),
-(2, 'thit heo', 10, 50000.00, 'KG', 1),
-(3, 'rau', 6, 40000.00, 'KG', 1),
-(4, 'dao', 6, 20000.00, 'UNIT', 2);
+INSERT INTO `receiptdetail` (`idReceiptDetail`, `name`, `quantity`, `price`, `unit`, `idReceipt`, `idIngredient`) VALUES
+(1, 'thit ga', 5, 100000.00, 'KG', 1, 1),
+(2, 'thit heo', 10, 50000.00, 'KG', 1, 2),
+(3, 'rau', 6, 40000.00, 'KG', 1, 3);
+INSERT INTO `receiptdetail` (`idReceiptDetail`, `name`, `quantity`, `price`, `unit`, `idReceipt`, `idWareHouse`) VALUES
+(4, 'dao', 6, 20000.00, 'UNIT', 2, 1);
 
 CREATE TABLE obs_db.recipe(
   `idProduct` INT(10) NOT NULL,
@@ -304,19 +305,16 @@ INSERT INTO `table` (`idTable`, `tableName`, `tableType`, `isUsing`, `isDelete`)
 (3, 'Ban 3', 'vip', 0, 1);
 
 CREATE TABLE obs_db.warehouse(
-  `idWareHouse` INT(11) NOT NULL AUTO_INCREMENT,
+  `idWareHouse` INT(10) NOT NULL AUTO_INCREMENT,
   `wareHouseName` VARCHAR(255),
   `remainQuantity` INT(11) NOT NULL,
   unit ENUM('UNIT') NOT NULL,
-  `idReceipt` INT(10) NOT NULL,
   PRIMARY KEY(`idWareHouse`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
   COLLATE = `utf8mb4_general_ci`;
 
-  CREATE INDEX `phieuNhap_kho` USING BTREE ON obs_db.warehouse(`idReceipt`);
-  
-INSERT INTO `warehouse` (`idWareHouse`, `wareHouseName`, `remainQuantity`, `unit`, `idReceipt`) VALUES
-(1, 'dao', 6, 'UNIT', 2);
+INSERT INTO `warehouse` (`idWareHouse`, `wareHouseName`, `remainQuantity`, `unit`) VALUES
+(1, 'dao', 6, 'UNIT');
 
 CREATE TABLE obs_db.`account`(
   `idAccount` INT(10) NOT NULL AUTO_INCREMENT,
@@ -324,16 +322,26 @@ CREATE TABLE obs_db.`account`(
   `password` VARCHAR(255) NOT NULL,
   `accessKey` VARCHAR(255),
   `refreshKey` VARCHAR(255),
-  `isLock` TINYINT(1) DEFAULT 0,
+  `isLocked` TINYINT(1) DEFAULT 0,
   PRIMARY KEY(`idAccount`)
 ) DEFAULT CHARACTER SET = `utf8` COLLATE = `utf8_general_ci`;
+
+INSERT INTO `account` (`idAccount`, `username`, `password`, `accessKey`, `refreshKey`, `isLocked`) VALUES
+(1, 'Minh Tan', '$2b$10$4TIquaPn6ztkZFlG8BdsSOiOiaa4r3pRqXZnglrya5rhRLcvQEZb.', '0ff61b8b1dfb19f5a6d1889f067dc11352d4635bdb7aaf06862f16eaddbf32655d4434a04de9f5a37f5e5e794f3ba3252ddbba155573d1f81d87815fdb1586db', 'b0f86fb8b6ab4e3a523dfa4e7d98bbced2bb4bdefc21e24835ac4311135d3029ab04c31376f4733fa1452773a7d3e8e6038d3a5ffb8506b6c3720a71ef4fa6d2', 0),
+(2, 'Minh Tan 1', '$2b$10$15f/JQvI11ziZJf43vGR9Oeb7pO9SkRh9DwPtzHHl7wgFN14qZ1zy', NULL, NULL, 0),
+(3, 'Minh Tan 2', '$2b$10$ejpHrtMdxuynv5bfH53js.m6I58l.lAw0X9koxa9B7FIq/rBczB.u', NULL, NULL, 0),
+(4, 'Minh Tan 3', '$2b$10$py2KiOh4IQwOQKxF/gElSOlkfN6VOu.HJhMGg.iakYag.jQTEp9H.', NULL, NULL, 0);
 
 CREATE TABLE obs_db.permission(
 `idPermission` INT(10) NOT NULL AUTO_INCREMENT,
   `permissionName` VARCHAR(255) NOT NULL, PRIMARY KEY(`idPermission`)
 ) DEFAULT CHARACTER SET = `utf8` COLLATE = `utf8_general_ci`;
 
-insert into permission (permissionName) values ('kiem toan'), ('order'), ('manager');
+INSERT INTO `permission` (`idPermission`, `permissionName`) VALUES
+(1, 'audit'),
+(2, 'order'),
+(3, 'manager'),
+(4, 'system manager');
 
 CREATE TABLE obs_db.account_permission(
   `idAP` INT NOT NULL AUTO_INCREMENT,
@@ -341,6 +349,14 @@ CREATE TABLE obs_db.account_permission(
   `idAccount` INT(10) NOT NULL,
   PRIMARY KEY(`idAP`)
 ) DEFAULT CHARACTER SET = `utf8` COLLATE = `utf8_general_ci`;
+
+INSERT INTO `account_permission` (`idAP`, `idPermission`, `idAccount`) VALUES
+(1, 1, 1),
+(2, 2, 1),
+(3, 1, 2),
+(4, 2, 2),
+(5, 1, 3),
+(6, 2, 3);
 
 CREATE TABLE obs_db.logger(
   `idLog` INT(10) NOT NULL,
@@ -420,16 +436,6 @@ ALTER TABLE obs_db.receiptdetail
     FOREIGN KEY (`idReceipt`) REFERENCES obs_db.receipt (`idReceipt`)
       ON DELETE Restrict ON UPDATE Restrict;
 
-ALTER TABLE obs_db.warehouse
-  ADD CONSTRAINT `phieuNhap_kho`
-    FOREIGN KEY (`idReceipt`) REFERENCES obs_db.receipt (`idReceipt`)
-      ON DELETE Restrict ON UPDATE Restrict;
-
-ALTER TABLE obs_db.ingredient
-  ADD CONSTRAINT `phieuNhap_nguyenLieu`
-    FOREIGN KEY (`idReceipt`) REFERENCES obs_db.receipt (`idReceipt`)
-      ON DELETE Restrict ON UPDATE Restrict;
-
 ALTER TABLE obs_db.orderdetail
   ADD CONSTRAINT `sanpham_chiTietDonHang_1`
     FOREIGN KEY (`idProduct`) REFERENCES obs_db.product (`idProduct`)
@@ -469,3 +475,15 @@ ALTER TABLE obs_db.account_permission
 ALTER TABLE obs_db.logger
   ADD CONSTRAINT account_logger
     FOREIGN KEY (`idAccount`) REFERENCES obs_db.`account` (`idAccount`);
+
+ALTER TABLE obs_db.receipt
+  ADD CONSTRAINT staff_receipt
+    FOREIGN KEY (`idStaff`) REFERENCES obs_db.staff (`idStaff`);
+
+ALTER TABLE obs_db.receiptdetail
+  ADD CONSTRAINT ingredient_receiptdetail
+    FOREIGN KEY (`idIngredient`) REFERENCES obs_db.ingredient (`idIngredient`);
+
+ALTER TABLE obs_db.receiptdetail
+  ADD CONSTRAINT warehouse_receiptdetail
+    FOREIGN KEY (`idWareHouse`) REFERENCES obs_db.warehouse (`idWareHouse`);

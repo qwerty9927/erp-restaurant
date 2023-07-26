@@ -42,6 +42,10 @@ const jsTest = (req, res, next) => {
     ]
   }
  */ 
+    case 3: {
+      testReduce()
+      break
+    }
   }
   
   res.send("Test done")
@@ -49,6 +53,14 @@ const jsTest = (req, res, next) => {
 
 const testDestructuring = ({receiptType, ...rest}) => {
   console.log(receiptType, rest)
+}
+
+const testReduce = () => {
+  let initValue = 0
+  let array = [1, 2, 3, 4]
+  array.reduce((pv, cv, ci) => {
+    console.log(pv, cv, ci)
+  })
 }
 
 export default jsTest

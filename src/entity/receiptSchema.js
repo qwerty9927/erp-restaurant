@@ -34,17 +34,18 @@ const receiptSchema = new EntitySchema({
       target: receiptdetailString,
       type: "one-to-many",
       inverseSide: "receiptRelation"
-    },
-    warehouseRelation: {
-      target: warehouseString,
-      type: "one-to-many",
-      inverseSide: "receiptRelation"
-    },
-    ingredientRelation: {
-      target: ingredientString,
-      type: "one-to-many",
-      inverseSide: "receiptRelation"
     }
+    // ,
+    // warehouseRelation: {
+    //   target: warehouseString,
+    //   type: "one-to-many",
+    //   inverseSide: "receiptRelation"
+    // },
+    // ingredientRelation: {
+    //   target: ingredientString,
+    //   type: "one-to-many",
+    //   inverseSide: "receiptRelation"
+    // }
   }
 })
 

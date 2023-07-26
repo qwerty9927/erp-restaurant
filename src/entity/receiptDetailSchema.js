@@ -24,6 +24,9 @@ const receiptDetailSchema = new EntitySchema({
     },
     idReceipt: {
       type: "int"
+    },
+    idWareHouse: {
+      type: "int"
     }
   },
   relations: {

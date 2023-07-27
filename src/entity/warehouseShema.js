@@ -15,22 +15,15 @@ const warehouseSchema = new EntitySchema({
     remainQuantity: {
       type: "int"
     },
+    priceOfOne: {
+      type: "double"
+    },
     unit: {
       type: "enum",
-      enum: ["UNIT"]
+      enum: ["UNIT", "LITER"]
     },
     idReceipt: {
       type: "int"
-    }
-  }, 
-  relations: {
-    receiptRelation: {
-      target: receiptString,
-      type: "many-to-one",
-      joinColumn: {
-        name: "idReceipt"
-      },
-      inverseSide: "warehouseRelation"
     }
   }
 })

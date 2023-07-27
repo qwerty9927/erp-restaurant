@@ -7,15 +7,18 @@ const closures = () => {
 
 }
 
-const appendAllObject = (array, property, value) => {
-  return array.map(object => {
-    object[property] = value
-    return object
-  })
+const appendToObject = (needHandle, property, value) => {
+  if(Array.isArray(needHandle)){
+    return needHandle.map(object => {
+      object[property] = value
+      return object
+    })
+  }
+  return needHandle[property] = value
 }
 
 export {
   fillterNullField,
   closures,
-  appendAllObject
+  appendToObject
 }

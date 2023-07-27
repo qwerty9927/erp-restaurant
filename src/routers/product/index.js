@@ -13,8 +13,11 @@ router.use(checkAuth)
 router.use(checkPermission)
 
 // [3, 4]
-router.use(accessible([4]))
+router.use(accessible([3, 4]))
 router.put("/createReceipt", ProductController.createReceipt)
+
+router.use(accessible([4]))
+router.put("/createProduct", ProductController.createProduct)
 
 
 // // All product

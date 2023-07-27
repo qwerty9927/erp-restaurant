@@ -5,6 +5,9 @@ const receiptString = "receipt"
 const receiptdetailString = "receiptdetail"
 const warehouseString = "warehouse"
 const ingredientString = "ingredient"
+const recipeString = "recipe"
+const productString = "product"
+const productPriceString = "productprice"
 
 export {
   accountString,
@@ -13,5 +16,8 @@ export {
   receiptString,
   receiptdetailString,
   warehouseString,
-  ingredientString
+  ingredientString,
+  recipeString,
+  productString,
+  productPriceString
 }

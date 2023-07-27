@@ -15,6 +15,18 @@ class ProductController {
     }
   }
 
+  async createProduct(req, res, next) {
+    try {
+      const payload = req.body
+      await ProductService.createProduct(payload)
+      new SuccessResponse({
+        message: "Create product success"
+      }).send({ res })
+    } catch (error) {
+      next(error)
+    }
+  }
+
 
   // async getAllProduct(req, res, next) {
   //   new SuccessResponse({

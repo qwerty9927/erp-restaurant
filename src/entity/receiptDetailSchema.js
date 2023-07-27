@@ -15,12 +15,15 @@ const receiptDetailSchema = new EntitySchema({
     quantity: {
       type: "int"
     }, 
-    price: {
+    quantityOfCrates: {
+      type: "smallint"
+    }, 
+    priceOfOne: {
       type: "double"
     },
     unit: {
       type: "enum",
-      enum: ["KG", "G", "UNIT"]
+      enum: ['KG','UNIT','LITER','CRATES']
     },
     idReceipt: {
       type: "int"

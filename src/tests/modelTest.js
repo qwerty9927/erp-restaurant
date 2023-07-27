@@ -1,6 +1,6 @@
 import Connection from "../db/connect.js"
-import { accountString, apString, ingredientString, receiptString, receiptdetailString, supplierString, warehouseString } from "../constance/entityName.js"
-import { appendAllObject } from "../utils/index.js"
+import { accountString, apString, ingredientString, productPriceString, productString, receiptString, receiptdetailString, recipeString, supplierString, warehouseString } from "../constance/entityName.js"
+import { appendToObject } from "../utils/index.js"
 
 const modelTest = async (req, res, next) => {
   const key = parseInt(req.params.key)
@@ -56,7 +56,26 @@ const modelTest = async (req, res, next) => {
       await testTransaction()
       break
     }
-
+    // Recipe
+    case 11: {
+      await testRecipeEntity()
+      break
+    }
+    // Product price
+    case 12: {
+      await testProductPriceEntity()
+      break
+    }
+    // Recipe_ingredient
+    case 13: {
+      await testRecipe_I()
+      break
+    }
+    // Create product test
+    case 14: {
+      await testCreateProduct()
+      break
+    }
   }
   res.send("Test done")
 }
@@ -179,10 +198,71 @@ const testTransaction = async () => {
       idStaff,
       total
     })
-    await transactionEntityManager.getRepository(receiptdetailString).insert(appendAllObject(receiptDetail, "idReceipt", resultInsertReceipt.raw.insertId))
+    await transactionEntityManager.getRepository(receiptdetailString).insert(appendToObject(receiptDetail, "idReceipt", resultInsertReceipt.raw.insertId))
   })
 
   console.log(result)
+}
+
+const testRecipeEntity = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(recipeString).find()
+  console.log(result)
+}
+
+const testProductPriceEntity = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(productPriceString).find()
+  console.log(result)
+}
+
+const testRecipe_I = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(recipeString).find({
+    relations: {
+      ingredientRelation: true
+    }
+  })
+  console.log(result)
+}
+
+const testCreateProduct = async () => {
+  // Transaction product, productprice and recipe
+  const productName = "Heo nuong"
+  const productType = "food"
+  const idCategory = 1
+  const recipeInfo = [
+      {
+          idIngredient: 2,
+          quantity: 0.5,
+          unit: "KG"
+      }, {
+          idIngredient: 3,
+          quantity: 100,
+          unit: "G"
+      }
+  ]
+  let resultInsertProduct = null
+  await Connection.getInstance().transaction(async transactionEntityManager => {
+    resultInsertProduct = await transactionEntityManager.getRepository(productString).insert({
+      productName,
+      productType,
+      idCategory
+    })
+    await transactionEntityManager.getRepository(recipeString).insert(appendToObject(recipeInfo, "idProduct", resultInsertProduct.raw.insertId))
+  })
+
+   // Calculate cost and price
+  // 1. Query ingredient corresponding to recipe and select ingredient.price
+  const ingredientOfRecipe = await Connection.getInstance().getRepository(recipeString).find({
+    relations: {
+      ingredientRelation: true
+    },
+    where: {
+      idProduct: resultInsertProduct.raw.insertId
+    }
+  })
+  console.log(ingredientOfRecipe)
 }
 
 export default modelTest

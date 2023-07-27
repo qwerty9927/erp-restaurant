@@ -1,10 +1,8 @@
 import { EntitySchema } from "typeorm";
-import Product from "../models/product.model.js";
-import categorySchema from "./categorySchema.js";
+import { productString } from "../constance/entityName.js";
 
 const productSchema = new EntitySchema({
-  name: "Product",
-  target: Product,
+  name: productString,
   columns: {
     idProduct: {
       primary: true,
@@ -12,12 +10,10 @@ const productSchema = new EntitySchema({
       generated: true
     }, 
     productName: {
-      type: "varchar",
-      length: 255
+      type: "varchar"
     },
     image: {
-      type: "varchar",
-      length: 255
+      type: "varchar"
     },
     productType: {
       type: "enum",
@@ -31,16 +27,6 @@ const productSchema = new EntitySchema({
     },
     idCategory: {
       type: "int"
-    }
-  },
-  relations: {
-    idCategory: {
-      target: categorySchema,
-      type: "many-to-one",
-      eager: true,
-      joinColumn: {
-        name: "idCategory"
-      }
     }
   }
 })

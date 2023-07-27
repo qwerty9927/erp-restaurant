@@ -15,22 +15,19 @@ const ingredientSchema = new EntitySchema({
     remainQuantity: {
       type: "int"
     },
+    ingredientType: {
+      type: "enum",
+      enum: ["food", "drink"]
+    },
+    priceOfOne: {
+      type: "double"
+    },
     unit: {
       type: "enum",
-      enum: ["UNIT"]
+      enum: ['KG','CAN']
     },
     idReceipt: {
       type: "int"
-    }
-  },
-  relations: {
-    receiptRelation: {
-      target: receiptString,
-      type: "many-to-one",
-      joinColumn: {
-        name: "idReceipt"
-      },
-      inverseSide: "ingredientRelation"
     }
   }
 })

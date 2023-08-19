@@ -1,10 +1,23 @@
-
-const fillterNullField = () => {
-
+import _ from "lodash"
+const fillterNullField = (needHandle) => {
+  Object.entries(needHandle).forEach(([key, value]) => {
+    if(value === null){
+      console.log("Null value: ", key)
+      delete(needHandle[key])
+    } else if (Array.isArray(value)) {
+      value.forEach(item => {
+        fillterNullField(item)
+      })
+    } else if(typeof value === "object") {
+      fillterNullField(value)
+    }
+  })
 }
 
-const closures = () => {
-
+const pickUpContentResponse = (array, selection = ["type", "msg", "path"]) => {
+  return array.map(item => {
+    return _.pick(item, selection)
+  })
 }
 
 const appendToObject = (needHandle, property, value) => {
@@ -19,6 +32,6 @@ const appendToObject = (needHandle, property, value) => {
 
 export {
   fillterNullField,
-  closures,
+  pickUpContentResponse,
   appendToObject
 }

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import _ from "lodash"
 import { ForbiddenRequest } from "../core/error.response.js"
-import { findAccountById, updateById } from "../repository/auth.repository.js"
+import { findAccountById, updateAccountById } from "../repository/auth.repository.js"
 import { createTokenPair, createKeyPair, wrapperJwt } from "./until.js"
 
 const checkAuth = async (req, res, next) => {

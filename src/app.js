@@ -7,6 +7,7 @@ import Connection from "./db/connect.js"
 import router from './routers/index.js'
 import handleError from "./helpers/handleError.js"
 
+
 const app = Express()
 
 // MiddleWare
@@ -15,10 +16,10 @@ app.use(cors(
 //   credentials: true
 // }
 ))
+config()
 app.use(Express.json())
 app.use(Express.urlencoded({ extended: true }))
 app.use(morgan("dev"))
-config()
 app.use(cookieParser())
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*")
@@ -51,10 +52,12 @@ app.use((error, req, res, next) => {
   const statusCode = error.statusCode || 500
   const code = error.code || statusCode
   const message = error.message || "Internal Server Error"
+  const errors = error?.errors
   res.status(statusCode).json({
     code,
     status: "Error",
-    message
+    message,
+    errors
   })
 })
 

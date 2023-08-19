@@ -1,6 +1,7 @@
 import Connection from "../db/connect.js"
-import { accountString, apString, ingredientString, productPriceString, productString, receiptString, receiptdetailString, recipeString, supplierString, warehouseString } from "../constance/entityName.js"
+import { accountString, apString, customerString, ingredientString, productPriceString, productString, receiptString, receiptdetailString, recipeString, supplierString, warehouseString } from "../constance/entityName.js"
 import { appendToObject } from "../utils/index.js"
+import { findAccountByUsername } from "../repository/auth.repository.js"
 
 const modelTest = async (req, res, next) => {
   const key = parseInt(req.params.key)
@@ -76,6 +77,16 @@ const modelTest = async (req, res, next) => {
       await testCreateProduct()
       break
     }
+    // Customer
+    case 15: {
+      await testCustomerEntity()
+      break
+    }
+    // Product
+    case 16: {
+      await testProductEntity()
+      break;
+    }
   }
   res.send("Test done")
 }
@@ -92,16 +103,41 @@ const testAccountEntity = async () => {
   // }))
 
   // Find account by (isLocked = 1)
-  result = await Connection.getInstance().getRepository("account").findOneBy({
-    isLocked: 0
-  })
+  // result = await Connection.getInstance().getRepository("account").findOneBy({
+  //   isLocked: 1
+  // })
 
+  // // phoneNumberVerification
+  // Find account not active
+  result = await findAccountByUsername({
+    username: "0123412341",
+    option: [{ isVerified: 0 }],
+  })
+  await Connection.getInstance().getRepository(accountString).insert({
+    username: "0123412341",
+  })
   console.log(result)
 }
 // 2
 const testApEntity = async () => {
-  const result = await Connection.getInstance().manager.find("account_permission")
+  let result
+  // result = await Connection.getInstance().manager.find("account_permission")
+  result = await Connection.getInstance().manager.findOne(accountString, {
+    where: {
+      username: "Minh Tan 1"
+    },
+    relations: {
+      account_permissionsRelation: true
+    }
+  })
   console.log(result)
+
+  const notExistPermission = [1, 2, 3, 4].filter((permission) => {
+    return result.account_permissionsRelation.every((item) => {
+      return item.idPermission !== permission
+    })
+  })
+  console.log(notExistPermission)
 }
 // 3
 const testRelationAp_A = async () => {
@@ -203,19 +239,19 @@ const testTransaction = async () => {
 
   console.log(result)
 }
-
+//11
 const testRecipeEntity = async () => {
   let result = null
   result = await Connection.getInstance().getRepository(recipeString).find()
   console.log(result)
 }
-
+//12
 const testProductPriceEntity = async () => {
   let result = null
   result = await Connection.getInstance().getRepository(productPriceString).find()
   console.log(result)
 }
-
+//13
 const testRecipe_I = async () => {
   let result = null
   result = await Connection.getInstance().getRepository(recipeString).find({
@@ -225,7 +261,7 @@ const testRecipe_I = async () => {
   })
   console.log(result)
 }
-
+//14
 const testCreateProduct = async () => {
   // Transaction product, productprice and recipe
   const productName = "Heo nuong"
@@ -263,6 +299,18 @@ const testCreateProduct = async () => {
     }
   })
   console.log(ingredientOfRecipe)
+}
+//15
+const testCustomerEntity = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(customerString).find()
+  console.log(result)
+}
+// 16
+const testProductEntity = async () => {
+  let result = null
+  result = await Connection.getInstance().getRepository(productString).find();
+  console.log(result)
 }
 
 export default modelTest

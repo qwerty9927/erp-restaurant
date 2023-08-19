@@ -5,6 +5,7 @@ import checkAuth from "../auth/checkAuth.js";
 import checkPermission from "../auth/checkPermission.js";
 import modelTest from "../tests/modelTest.js";
 import jsTest from "../tests/jsTest.js";
+import serviceTest from "../tests/serviceTest.js";
 
 const router = Router()
 
@@ -19,6 +20,8 @@ router.use("/v1/api/product", productRouter)
 router.get("/modelTest/:key", modelTest)
 // JavaScript test
 router.get("/jsTest/:key", jsTest)
+// Service test
+router.get("/serviceTest/:key", serviceTest)
 // Authorization
 router.use(checkAuth)
 // Permission

@@ -12,6 +12,9 @@ const productSchema = new EntitySchema({
     productName: {
       type: "varchar"
     },
+    slug: {
+      type: "varchar"
+    },
     image: {
       type: "varchar"
     },
@@ -22,7 +25,10 @@ const productSchema = new EntitySchema({
     isDirect: {
       type: "tinyint"
     },
-    isDelete: {
+    isPublish: {
+      type: "tinyint"
+    },
+    isDraft: {
       type: "tinyint"
     },
     idCategory: {

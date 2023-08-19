@@ -8,6 +8,7 @@ const ingredientString = "ingredient"
 const recipeString = "recipe"
 const productString = "product"
 const productPriceString = "productprice"
+const customerString = "customer"
 
 export {
   accountString,
@@ -19,5 +20,6 @@ export {
   ingredientString,
   recipeString,
   productString,
-  productPriceString
+  productPriceString,
+  customerString
 }

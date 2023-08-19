@@ -12,7 +12,7 @@ class Connection {
     if(AppDataSource.isInitialized){
       return AppDataSource
     } else {
-      this.connect()
+      Connection.connect()
       return AppDataSource
     }
   }

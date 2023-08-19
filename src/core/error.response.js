@@ -1,10 +1,11 @@
 import { ReasonPhrases, StatusCodes } from "../utils/httpStatusCode.js"
 
 class ErrorResponse extends Error {
-  constructor(message = ReasonPhrases.INTERNAL_SERVER_ERROR, statusCode = StatusCodes.INTERNAL_SERVER_ERROR, code = StatusCodes.INTERNAL_SERVER_ERROR){
+  constructor(message = ReasonPhrases.INTERNAL_SERVER_ERROR, statusCode = StatusCodes.INTERNAL_SERVER_ERROR, code = StatusCodes.INTERNAL_SERVER_ERROR, errors = null){
     super(message)
     this.statusCode = statusCode
     this.code = code
+    this.errors = errors
   }
 }
 
@@ -32,10 +33,24 @@ class NotFoundRequest extends ErrorResponse {
   }
 }
 
+class BadRequest extends ErrorResponse {
+  constructor(message = ReasonPhrases.BAD_REQUEST, statusCode = StatusCodes.BAD_REQUEST, code = StatusCodes.BAD_REQUEST) {
+    super(message, statusCode, code)
+  }
+}
+
+class UnprocessableContentRequest extends ErrorResponse {
+  constructor(errors = [], message = ReasonPhrases.UNPROCESSABLE_ENTITY, statusCode = StatusCodes.UNPROCESSABLE_ENTITY, code = StatusCodes.UNPROCESSABLE_ENTITY) {
+    super(message, statusCode, code, errors)
+  }
+}
+
 export {
   ErrorResponse,
   ForbiddenRequest,
   ConflictRequest,
   AuthFailureRequest,
-  NotFoundRequest
+  NotFoundRequest,
+  BadRequest,
+  UnprocessableContentRequest
 }

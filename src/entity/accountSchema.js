@@ -25,6 +25,15 @@ const accountSchema = new EntitySchema({
       type: "varchar",
       length: 255
     },
+    emailToken: {
+      type: "varchar"
+    },
+    isVerifiedPhoneNumber: {
+      type: "tinyint"
+    },
+    isVerifiedEmail: {
+      type: "tinyint"
+    },
     isLocked: {
       type: "tinyint"
     }

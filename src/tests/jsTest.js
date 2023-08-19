@@ -46,6 +46,11 @@ const jsTest = (req, res, next) => {
       testReduce()
       break
     }
+
+    case 4: {
+      testFillterNullField()
+      break
+    }
   }
   
   res.send("Test done")
@@ -61,6 +66,50 @@ const testReduce = () => {
   array.reduce((pv, cv, ci) => {
     console.log(pv, cv, ci)
   })
+}
+
+const testFillterNullField = () => {
+  const needHandle = {
+    "receiptType": "food",
+    "idSupplier": 1,
+    "idStaff": 1,
+    "note": null,
+    "receiptDetail": [
+        {
+            "name": "Tom",
+            "quantity": 10,
+            "priceOfOne": 100000,
+            "unit": null
+        },
+        {
+            "name": "Cua",
+            "quantity": 10,
+            "priceOfOne": 50000,
+            "unit": "KG"
+        }
+    ],
+    "object": {
+      "name": "a",
+      "age": 12,
+      "gender": null
+    }
+  }
+  const recursion = (object) => {
+    Object.entries(object).forEach(([key, value]) => {
+      if(value === null){
+        console.log("Null value: ", key)
+        delete(object[key])
+      } else if (Array.isArray(value)) {
+        value.forEach(item => {
+          recursion(item)
+        })
+      } else if(typeof value === "object") {
+        recursion(value)
+      }
+    })
+  }
+  recursion(needHandle)
+  console.log(needHandle)
 }
 
 export default jsTest

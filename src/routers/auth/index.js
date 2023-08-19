@@ -3,10 +3,14 @@ import AuthController from "../../controllers/auth.controller.js";
 import checkAuth from "../../auth/checkAuth.js";
 import checkPermission from "../../auth/checkPermission.js";
 import accessible from "../../auth/accessible.js";
+import validator from "../../libs/express-validator/index.js";
 
 const router = Router()
 
-router.post("/login", AuthController.login)
+router.post("/login", validator.validateLogin(), AuthController.login)
+router.post("/phoneNumberVerification", validator.validatePhoneNumber(), AuthController.phoneNumberVerification)
+router.put("/register", validator.validateRegister(), AuthController.register)
+router.get("/verifyEmail", AuthController.verifyEmail)
 
 // Authorization
 router.use(checkAuth)
@@ -26,6 +30,7 @@ router.put("/createAccount", AuthController.createAccount)
 router.use(accessible([4]))
 router.patch("/lockAccount", AuthController.lockAccount)
 router.patch("/unLockAccount", AuthController.unLockAccount)
+router.put("/modifypermission", AuthController.modifyPermission)
 
 
 export default router

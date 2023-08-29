@@ -1,7 +1,9 @@
 import Connection from "../db/connect.js"
-import { accountString, apString, customerString, ingredientString, productPriceString, productString, receiptString, receiptdetailString, recipeString, supplierString, warehouseString } from "../constance/entityName.js"
-import { appendToObject } from "../utils/index.js"
+import { accountString, apString, categoryString, customerString, ingredientString, productPriceString, productString, receiptString, receiptdetailString, recipeString, supplierString, warehouseString } from "../constance/entityName.js"
+import { appendToObject, getSelectData } from "../utils/index.js"
 import { findAccountByUsername } from "../repository/auth.repository.js"
+import { findCategory, findProduct } from "../repository/product.repository.js"
+import productService from "../services/product.service.js"
 
 const modelTest = async (req, res, next) => {
   const key = parseInt(req.params.key)
@@ -82,11 +84,13 @@ const modelTest = async (req, res, next) => {
       await testCustomerEntity()
       break
     }
+    //
     // Product
     case 16: {
-      await testProductEntity()
-      break;
+      await testProduct()
+      break
     }
+    
   }
   res.send("Test done")
 }
@@ -306,10 +310,31 @@ const testCustomerEntity = async () => {
   result = await Connection.getInstance().getRepository(customerString).find()
   console.log(result)
 }
-// 16
-const testProductEntity = async () => {
+//16
+const testProduct = async () => {
   let result = null
-  result = await Connection.getInstance().getRepository(productString).find();
+
+  // result = await productService.getAllProductOfCategory(1)
+  // console.log(result)
+
+  // Get category with product
+  // result = await Connection.getInstance().getRepository(categoryString).find({
+  //   relations: {
+  //     productRelation: true,
+  //   },
+  //   select: {
+  //     productRelation: {
+  //       productName: true
+  //     }
+  //   }
+  // })
+  // console.log(result[0].productRelation)
+
+  // Test getSelectData
+  // result = getSelectData()
+
+  // Test category
+  result = await findCategory({where: {categoryName: "mon chinh"}})
   console.log(result)
 }
 

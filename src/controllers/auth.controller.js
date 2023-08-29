@@ -23,7 +23,6 @@ class AuthController {
       if(!validator.isEmpty()) {
         throw new UnprocessableContentRequest(pickUpContentResponse(validator.array()))
       }
-      console.log(errors.array())
       const { username, password } = req.body
       const { accessToken, refreshToken } = await AuthService.login({
         username,

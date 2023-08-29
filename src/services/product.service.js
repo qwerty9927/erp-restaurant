@@ -1,15 +1,28 @@
 import slugify from "slugify"
 import Connection from "../db/connect.js"
 import {
+  categoryString,
   productPriceString,
   productString,
   receiptString,
   receiptdetailString,
   recipeString,
 } from "../constance/entityName.js"
-import { appendToObject } from "../utils/index.js"
+import { appendToObject, getSelectData, pickUpContent } from "../utils/index.js"
+import {
+  findCategory,
+  findCategoryByName,
+  findCategoryById,
+  findProductById,
+  updateProductById,
+  findProduct,
+} from "../repository/product.repository.js"
+import { ConflictRequest, NotFoundRequest } from "../core/error.response.js"
+import { Like } from "typeorm"
 
 class ProductService {
+  // Product
+
   async createReceipt({
     receiptType,
     idSupplier,
@@ -110,33 +123,120 @@ class ProductService {
     })
   }
 
-  // // Get all
-  // async getAllProduct() {
-  //   const products = await Connection.getInstance().manager.findBy(Product, {
-  //     isDelete: 0
-  //   })
-  //   return products
-  // }
+  async publishProduct(idProduct) {
+    const foundProduct = await findProductById({ idProduct })
+    if (!foundProduct) {
+      throw new NotFoundRequest()
+    }
+    const dataSet = { isPublish: 1 }
+    await updateProductById({ idProduct, dataSet })
+  }
 
-  // // Get detail product
-  // async getDetailProduct({ idProduct }) {
-  //   console.log(idProduct)
-  //   const product = await Connection.getInstance().manager.findOne(Product, {
-  //     select: ["idProduct", "productName", "image", "productType", "isDirect", "idCategory"],
-  //     where: {
-  //       idProduct
-  //     }
-  //   })
-  //   return product
-  // }
+  async unPublishProduct(idProduct) {
+    const foundProduct = await findProductById({ idProduct })
+    if (!foundProduct) {
+      throw new NotFoundRequest()
+    }
+    const dataSet = { isPublish: 0 }
+    await updateProductById({ idProduct, dataSet })
+  }
 
-  // Find product
+  async getAllProductOfCategory(idCategory) {
+    const relations = { productRelation: true }
+    const dataUnSelect = [
+      "productRelation.idProduct",
+      "productRelation.productName",
+      "productRelation.slug",
+      "productRelation.image",
+      "productRelation.productType",
+      "productRelation.isDirect",
+      "productRelation.idCategory",
+    ]
+    const foundCategory = await findCategoryById({
+      idCategory,
+      relations,
+      select: getSelectData(dataUnSelect),
+    })
+    if (!foundCategory) {
+      throw new NotFoundRequest("Category is not exist")
+    }
+    return foundCategory.productRelation
+  }
 
-  // Create Product
+  async getProduct(idProduct) {
+    const select = [
+      "idProduct",
+      "productName",
+      "slug",
+      "image",
+      "productType",
+      "isDirect",
+      "idCategory",
+    ]
+    const foundProduct = await findProductById({idProduct, select})
+    if(!foundProduct) {
+      throw new NotFoundRequest("Product is not exist")
+    }
+    return foundProduct
+  }
 
-  // Update Product
+  async searchProduct(keyword) {
+    const select = [
+      "idProduct",
+      "productName",
+      "slug",
+      "image",
+      "productType",
+      "isDirect",
+      "idCategory",
+    ]
+    const foundProducts = await findProduct({
+      where: {
+        productName: Like(`%${keyword}%`)
+      },
+      select
+    })
+    if(!foundProducts) {
+      throw new NotFoundRequest("Product is not exist")
+    }
+    return foundProducts
+  }
 
-  // Hidden Product
+  async updateProduct({idProduct, dataSet}) {
+    const select = [
+      "idProduct",
+      "productName",
+      "slug",
+      "image",
+      "productType",
+      "isDirect",
+      "idCategory",
+    ]
+    const foundProduct = await findProductById({idProduct, select})
+    if(!foundProduct) {
+      throw new NotFoundRequest("Product is not exist")
+    }
+    const modifyProduct = await updateProductById({idProduct, dataSet})
+    return modifyProduct
+  }
+
+
+  // Category
+
+  async createCategory({categoryName, image = null}) {
+    const foundCatgory = await findCategoryByName({ categoryName })
+    if (foundCatgory) {
+      throw new ConflictRequest("Category is exist")
+    }
+    return await Connection.getInstance()
+      .getRepository(categoryString)
+      .insert({ categoryName, image })
+  }
+
+  async getAllCategory() {
+    return await findCategory({})
+  }
+
 }
 
 export default new ProductService()

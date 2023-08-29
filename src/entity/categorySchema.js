@@ -1,9 +1,8 @@
 import { EntitySchema } from "typeorm";
-import Category from "../models/category.model.js";
+import { productString, categoryString } from "../constance/entityName.js";
 
 const categorySchema = new EntitySchema({
-  name: "Category",
-  target: Category,
+  name: categoryString,
   columns: {
     idCategory: {
       type: "int",
@@ -11,8 +10,17 @@ const categorySchema = new EntitySchema({
       primary: true
     },
     categoryName: {
-      type: "varchar",
-      length: 255
+      type: "varchar"
+    },
+    image: {
+      type: "varchar"
+    }
+  },
+  relations: {
+    productRelation: {
+      target: productString,
+      type: "one-to-many",
+      inverseSide: "categoryRelation"
     }
   }
 })

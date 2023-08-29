@@ -1,5 +1,5 @@
 import { EntitySchema } from "typeorm";
-import { productString } from "../constance/entityName.js";
+import { categoryString, productString } from "../constance/entityName.js";
 
 const productSchema = new EntitySchema({
   name: productString,
@@ -28,11 +28,18 @@ const productSchema = new EntitySchema({
     isPublish: {
       type: "tinyint"
     },
-    isDraft: {
-      type: "tinyint"
-    },
     idCategory: {
       type: "int"
+    }
+  }, 
+  relations: {
+    categoryRelation: {
+      target: categoryString,
+      type: "many-to-one",
+      joinColumn: {
+        name: "idCategory"
+      },
+      inverseSide: "productRelation"
     }
   }
 })

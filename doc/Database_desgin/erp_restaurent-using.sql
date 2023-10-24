@@ -5,8 +5,8 @@ CREATE TABLE obs_db.category(
   `categoryName` VARCHAR(255) NOT NULL,
   image VARCHAR(255),
   PRIMARY KEY(`idCategory`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
-  COLLATE = `utf8mb4_general_ci`;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8`
+  COLLATE = `utf8_general_ci`;
 
 INSERT INTO `category` (`idCategory`, `categoryName`) VALUES
 (1, 'mon chinh');
@@ -21,8 +21,8 @@ CREATE TABLE obs_db.discount(
   `startDate` DATE,
   `endDate` DATE,
   PRIMARY KEY(`idDiscount`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
-  COLLATE = `utf8mb4_general_ci`;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8`
+  COLLATE = `utf8_general_ci`;
 
 INSERT INTO `discount` (`idDiscount`, `code`, `discountName`, `description`, `value`, `discountType`, `startDate`, `endDate`) VALUES
 (1, 'A1234', 'giam 10k', 'duoc giam 10k', 10000, 'fixed amount', '2023-07-20', '2023-07-25'),
@@ -41,8 +41,8 @@ CREATE TABLE obs_db.ingredient(
   unit ENUM('KG','CAN') NOT NULL,
   `idReceipt` INT(10) NOT NULL,
   PRIMARY KEY(`idIngredient`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
-  COLLATE = `utf8mb4_general_ci`;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8`
+  COLLATE = `utf8_general_ci`;
 
 INSERT INTO `ingredient` (`idIngredient`, `ingredientName`, `remainQuantity`, `ingredientType`, `unit`, `priceOfOne`, `idReceipt`) VALUES
 (1, 'thit ga', 5, 'food', 'KG', 100000, 1),
@@ -173,8 +173,8 @@ CREATE TABLE obs_db.productprice(
   price DOUBLE(11,2) NOT NULL,
   cost DOUBLE(11,2) NOT NULL,
   PRIMARY KEY(`idProduct`)
-) ENGINE = InnoDB DEFAULT CHARACTER SET = `utf8mb4`
-  COLLATE = `utf8mb4_general_ci`;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = `utf8`
+  COLLATE = `utf8_general_ci`;
 
 INSERT INTO `productprice` (`idProduct`, `productName`, `price`, `cost`) VALUES
 (1, 'ga heo mix rau xanh', 200000.00, 100000.00);
@@ -188,8 +188,8 @@ CREATE TABLE obs_db.receipt(
   `createdAt` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
   note VARCHAR(255),
   PRIMARY KEY(`idReceipt`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
-  COLLATE = `utf8mb4_general_ci`;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8`
+  COLLATE = `utf8_general_ci`;
 
   CREATE INDEX `nhacungcap_phieuNhap` USING BTREE ON obs_db.receipt(`idSupplier`);
   
@@ -207,8 +207,8 @@ CREATE TABLE obs_db.receiptdetail(
   `idReceipt` INT(10) NOT NULL,
   `idWareHouse` INT(10),
   PRIMARY KEY(`idReceiptDetail`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
-  COLLATE = `utf8mb4_general_ci`;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8`
+  COLLATE = `utf8_general_ci`;
 
   CREATE INDEX `phieuNhap_chiTietPhieuNhap` USING BTREE ON obs_db.receiptdetail
     (`idReceipt`);
@@ -226,8 +226,8 @@ CREATE TABLE obs_db.recipe(
   quantity DOUBLE(10,2) NOT NULL,
   unit ENUM("KG", "CAN") NOT NULL,
   PRIMARY KEY(`idIngredient`, `idProduct`)
-) ENGINE = InnoDB DEFAULT CHARACTER SET = `utf8mb4`
-  COLLATE = `utf8mb4_general_ci`;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = `utf8`
+  COLLATE = `utf8_general_ci`;
 
   CREATE INDEX `sanpham_congThuc` USING BTREE ON obs_db.recipe(`idProduct`);
   
@@ -297,8 +297,8 @@ CREATE TABLE obs_db.warehouse(
   unit ENUM('UNIT', "LITER") NOT NULL,
   `idReceipt` INT(10) NOT NULL,
   PRIMARY KEY(`idWareHouse`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8mb4`
-  COLLATE = `utf8mb4_general_ci`;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = `utf8`
+  COLLATE = `utf8_general_ci`;
 
 INSERT INTO `warehouse` (`idWareHouse`, `wareHouseName`, `remainQuantity`, `priceOfOne`, `unit`, `idReceipt`) VALUES
 (1, 'dao', 6, 20000, 'UNIT', 2);
